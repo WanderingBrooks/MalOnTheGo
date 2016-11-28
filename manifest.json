@@ -1,0 +1,43 @@
+{
+  "manifest_version": 2,
+
+  "name": "MalOnTheGo Alpha",
+  "description": "Update your MyAnimeList from crunchyroll.com",
+  "version": "0.4",
+
+  "browser_action": {
+    "default_icon": "images/icon.png",
+	"default_title": "Hide/Show"
+  },
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/",
+	"storage",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.crunchyroll.com/*"
+      ],
+      "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malotg-page.js"],
+      "css": ["CSS/jquery-ui.min.css", "CSS/malotg-snipet.css"]
+    }
+  ],
+  "background": {
+    "scripts": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/malotg-cr.js", "JavaScript/malotg-controller.js"],
+    "persistent": false
+  },
+
+  "web_accessible_resources": [
+    "HTML/malotg-snipet.html",
+    "CSS/malotg-snipet.css",
+    "CSS/malotg-options.css"
+    ],
+
+  "options_ui": {
+    "page": "HTML/malotg-options.html",
+    "chrome_style": true
+  }
+}

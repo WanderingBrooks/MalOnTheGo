@@ -1,0 +1,55 @@
+    <script src="/JavaScript/jquery-3.1.1.min.js"> </script>
+    <script src="/JavaScript/jquery-ui.min.js"> </script>
+    <link rel="stylesheet" type="text/css" href="../CSS/malotg-snipet.css" media="screen" />
+    <div>
+        <label> Anime Title </label>
+            <a id="malotg-series_title" target="_blank" href="https://myanimelist.net/404/"> Title </a>
+    </div>
+    <div>
+        <label> Status </label>
+        <select id="malotg-my_status">
+            <option> Watching</option>
+            <option> Completed</option>
+            <option> On-Hold</option>
+            <option> Dropped</option>
+            <option> Plan To Watch</option>
+        </select>
+    </div>
+    <div>
+        <label> Epiosodes Watched </label>
+        <input id="malotg-my_watched_episodes" type="number" min="0" value=""/>
+        <span> / </span>
+        <span id="malotg-series_episodes"> 0 </span>
+    </div>
+    <div>
+        <label> Your Score </label>
+        <select id="malotg-my_score">
+            <option> Select Score</option>
+            <option> (10) Masterpiece</option>
+            <option> (9) Great</option>
+            <option> (8) Very Good</option>
+            <option> (7) Good</option>
+            <option> (6) Fine</option>
+            <option> (5) Average</option>
+            <option> (4) Bad</option>
+            <option> (3) Very Bad</option>
+            <option> (2) Horrible</option>
+            <option> (1) Apalling</option>
+        </select>
+    </div>
+    <div>
+        <form>
+            Start Date:
+            <input id="malotg-my_start_date" type="text">
+        </form>
+    </div>
+    <div>
+        <form>
+            End Date:
+            <input id="malotg-my_finish_date" type="text">
+        </form>
+    </div>
+    <div id="malotg-buttons">
+        <button id="malotg-submit"> Submit</button>
+        <button id="malotg-delete"> Delete</button>
+    </div>

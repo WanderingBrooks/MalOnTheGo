@@ -1,0 +1,23 @@
+#malotg-options>div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.malotg-links {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#malotg-links a:hover {
+    text-decoration: underline;
+}
+
+#malotg-links a {
+    text-decoration: none;
+    color: #0A6DA4;
+}
+
+#malotg-options {
+    font-family: Verdana, Arial;
+    font-size: 13px;
+}

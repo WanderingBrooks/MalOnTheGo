@@ -1,0 +1,55 @@
+#malotg-series_title {
+    text-decoration: none;
+    color: #0A6DA4;
+}
+#malotg-series_title:hover {
+    text-decoration: underline;
+}
+#malotg>div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#malotg>div>label {
+    width: 130px;
+    font-size: 11px;
+    display:inline-block;
+}
+
+#malotg-my_watched_episodes {
+    width: 50px;
+}
+
+#malotg {
+    font-family: Verdana, Arial;
+    font-size: 13px;
+}
+
+
+#malotg-buttons {
+    margin-left: 75px;
+}
+
+#malotg-buttons>button {
+    margin-right: 30px;
+    border-style: solid;
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-top-color: #6c8cd8;
+    border-left-color: #6c8cd8;
+    border-bottom-color: #2e51a2;
+    border-right-color: #2e51a2;
+    background-color: #4165ba;
+    color: #FFFFFF;
+    font-size: 11px;
+    text-decoration: none;
+    padding: 1px 3px;
+    font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+    cursor: pointer;
+}
+
+.ui-widget-header .ui-icon {
+    background-image: url("https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
+}
