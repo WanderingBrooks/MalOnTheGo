@@ -1,3 +1,8 @@
+#malotg {
+    font-family: Verdana, Arial;
+    font-size: 13px;
+}
+
 #malotg-series_title {
     text-decoration: none;
     color: #0A6DA4;
@@ -20,11 +25,10 @@
     width: 50px;
 }
 
-#malotg {
-    font-family: Verdana, Arial;
-    font-size: 13px;
+#malotg-info {
+    font-size: 25px;
+    font-weight: bold;
 }
-
 
 #malotg-buttons {
     margin-left: 75px;

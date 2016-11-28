@@ -5,4 +5,3 @@
 5. Create something anyone can use we have the code base just make it generic in Content
 6. In page alert user that its been saved correctly on crunchyroll or whatever
 7. In page alert user that something failed
-8. Not logged into crunchyroll

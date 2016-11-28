@@ -18,6 +18,15 @@ chrome.runtime.onMessage.addListener(
             inject(request.code, request.values);
         }
 
+        else if ( request.message === "information update") {
+            if (document.getElementById("malotg")) {
+                document.getElementById("malotg-info").textContent = request.text;
+                setTimeout(function() {
+                    document.getElementById('malotg-info').textContent = 'MalOnTheGo';
+                }, 1000);
+            }
+        }
+
 
     }
 );
@@ -40,15 +49,18 @@ $(document).ready(function() {
             }
             if (movie.charAt(0) != " ") {
                 chrome.runtime.sendMessage({
-                    "message": "CRAnime",
-                    "url": URL,
-                    "aboveVideo": aboveVideo,
-                    "belowVideo": belowVideo
+                    "message": "get info",
+                    "data": {
+                        "url": URL,
+                        "aboveVideo": aboveVideo,
+                        "belowVideo": belowVideo
+                    }
+
                 });
             }
             else {
                 chrome.runtime.sendMessage({
-                    "message": "CRMovie",
+                    "message": "get info",
                     "url": URL,
                     "aboveVideo": aboveVideo,
                     "movie": movie
@@ -65,6 +77,7 @@ function createListeners(code, id) {
     function submitListener() {
 
         if (code === -1) {
+            code = 0;
             chrome.runtime.sendMessage({
                 "message": "add",
                 "data": {
@@ -114,6 +127,7 @@ function createListeners(code, id) {
 
 
         function deleteListener() {
+        code = -1
             chrome.runtime.sendMessage({
                 "message": "delete",
                 "id": id,

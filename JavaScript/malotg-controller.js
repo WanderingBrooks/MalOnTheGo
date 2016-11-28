@@ -14,16 +14,14 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 // Called when the content script finds the required fields for the website
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        if (request.message === "CRAnime") {
-            if (request.url.indexOf("/episode-") != -1) {
-                var titles = [];
-                titles = [request.aboveVideo, request.belowVideo, parseCR(request.url)];
-                searchAndFindShow(titles);
-            }
-        }
-        else  if (request.message === "CRMovie"){
+        if (request.message === "get info") {
             var titles = [];
-            titles = [request.aboveVideo, request.movie, parseCR(request.url)];
+            var keys =  Object.keys(request.data);
+            var key;
+            for (var i = 0; i <  keys.length; i++) {
+                key = keys[i];
+                titles.push(request.data[key]);
+            }
             searchAndFindShow(titles);
         }
         /*Ajax post to add a new anime to a users list */
@@ -59,7 +57,7 @@ function objectToXML(object, rootName) {
 
 /*Tells the user to email me because a post went wrong */
 function postToMalFail(jqXHR, textStatus, errorThrown) {
-    alert("Posting the data failed pleas email cs.jasonbrooks@gmail.com ");
+    sendInfo("Posting the data failed pleas email cs.jasonbrooks@gmail.com ");
 }
 // Tells the user to email me because something went wrong
 function userFail() {
@@ -283,6 +281,7 @@ function sendRequest(mode, data, id,  user, password) {
             "url": " https://myanimelist.net/api/animelist/add/" + id + ".xml",
             "type": "POST",
             "data": {"data": xmlString},
+            "success": alertHappen,
             "error": postToMalFail,
             "username": user,
             "password": password
@@ -295,6 +294,7 @@ function sendRequest(mode, data, id,  user, password) {
             "url": " https://myanimelist.net/api/animelist/update/" + id + ".xml",
             "type": "POST",
             "data": {"data": xmlString},
+            "success": alertHappen,
             "error": postToMalFail,
             "username": user,
             "password": password
@@ -304,6 +304,7 @@ function sendRequest(mode, data, id,  user, password) {
         $.ajax({
             "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
             "type": "POST",
+            "success": alertHappen,
             "error": postToMalFail,
             "username": user,
             "password": password
@@ -318,6 +319,17 @@ function sendRequest(mode, data, id,  user, password) {
             "error": userFail
         });
     }
+}
+/* Sends information to be displayed to the user*/
+function sendInfo(text) {
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+        var activeTab = tabs[0];
+        chrome.tabs.sendMessage(activeTab.id, {"message": "information update", "text": text});
+    });
+}
+
+function alertHappen(data, textStatus, jqXHR) {
+    sendInfo(jqXHR.responseText);
 }
 
 

@@ -68,8 +68,8 @@ function verifyCredentials() {
 }
 
 // Alerts the user if the credentials are wrong
-function failedRequest(textStatus) {
-    document.getElementById('malotg-update').textContent = textStatus.responseText;
+function failedRequest(jqXHR) {
+    document.getElementById('malotg-update').textContent = jqXHR.responseText;
     setTimeout(function() {
         document.getElementById('malotg-update').textContent = 'Input your MyAnimeList credentials';
     }, 1000);
