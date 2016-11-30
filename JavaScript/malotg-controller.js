@@ -96,6 +96,7 @@ function findAnimeCreator(id, title, episodes) {
                         "my_watched_episodes": $anime.find("my_watched_episodes").text(),
                         "my_start_date": $my_start_date,
                         "my_finish_date": $my_finish_date,
+                        "my_tags": $anime.find("my_tags").text(),
                         "series_animedb_id": id
                     }});
             });
@@ -281,7 +282,7 @@ function sendRequest(mode, data, id,  user, password) {
             "url": " https://myanimelist.net/api/animelist/add/" + id + ".xml",
             "type": "POST",
             "data": {"data": xmlString},
-            "success": alertHappen,
+            "success": getInfo,
             "error": postToMalFail,
             "username": user,
             "password": password
@@ -294,7 +295,7 @@ function sendRequest(mode, data, id,  user, password) {
             "url": " https://myanimelist.net/api/animelist/update/" + id + ".xml",
             "type": "POST",
             "data": {"data": xmlString},
-            "success": alertHappen,
+            "success": getInfo,
             "error": postToMalFail,
             "username": user,
             "password": password
@@ -304,7 +305,7 @@ function sendRequest(mode, data, id,  user, password) {
         $.ajax({
             "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
             "type": "POST",
-            "success": alertHappen,
+            "success": getInfo,
             "error": postToMalFail,
             "username": user,
             "password": password
@@ -328,7 +329,7 @@ function sendInfo(text) {
     });
 }
 
-function alertHappen(data, textStatus, jqXHR) {
+function getInfo(data, textStatus, jqXHR) {
     sendInfo(jqXHR.responseText);
 }
 

@@ -74,6 +74,7 @@ $(document).ready(function() {
 });
 
 function createListeners(code, id) {
+
     function submitListener() {
 
         if (code === -1) {
@@ -99,6 +100,7 @@ function createListeners(code, id) {
                 "id": id
             });
         }
+
         else if (code === 0) {
             chrome.runtime.sendMessage({
                 "message": "update",
@@ -116,7 +118,7 @@ function createListeners(code, id) {
                     "enable_discussion": "",
                     "enable_rewatching": "",
                     "comments": "",
-                    "tags": ""
+                    "tags": document.getElementById("malotg-my_tags").value
                 },
                 "id": id
             });
@@ -127,7 +129,7 @@ function createListeners(code, id) {
 
 
         function deleteListener() {
-        code = -1
+        code = -1;
             chrome.runtime.sendMessage({
                 "message": "delete",
                 "id": id,
@@ -135,8 +137,42 @@ function createListeners(code, id) {
             });
         }
 
+        function showListener() {
+            if (document.getElementById("malotg-advanced")) {
+                if (document.getElementById("malotg-advanced").style.displey = "none") {
+                    document.getElementById("malotg-advanced").style.display = "inline";
+                    document.getElementById("malotg-hide-advanced").style.display = "inline";
+                    document.getElementById("malotg-show-advanced").style.display = "none";
+                }
+            }
+        }
+
+        function hideListener() {
+            if (document.getElementById("malotg-advanced")) {
+                if ( document.getElementById("malotg-advanced").style.displey = "inline") {
+                    document.getElementById("malotg-advanced").style.display = "none";
+                    document.getElementById("malotg-hide-advanced").style.display = "none";
+                    document.getElementById("malotg-show-advanced").style.display = "inline";
+                }
+            }
+        }
+        // This function submits to make sure that no user info is lost before going to myanimelist
+        // The timeout function is there so the window opens after the data has been sent to myanimelist
+        // Should it be a calback?
+        function moreOptionsListener() {
+            submitListener();
+            setTimeout(function() {
+                window.open("https://myanimelist.net/ownlist/anime/" + id  +"/edit", '_blank');
+            }, 350);
+
+        }
+
         $("#malotg-submit").on("click", submitListener);
         $("#malotg-delete").on("click", deleteListener);
+        $("#malotg-show-advanced").on("click", showListener);
+        $("#malotg-hide-advanced").on("click", hideListener);
+        $("#malotg-more-options").on("click", moreOptionsListener);
+
 
 }
 
@@ -164,6 +200,7 @@ function setStatus(code, currentStatus) {
         document.getElementById("malotg-my_watched_episodes").value = 0;
         document.getElementById("malotg-series_episodes").textContent = currentStatus.series_episodes;
         document.getElementById("malotg-my_score").selectedIndex = 0;
+        document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + currentStatus.series_animedb_id     + "/edit";
     }
     else if (code == 0) {
         if (currentStatus.series_episodes == 0) {
@@ -180,6 +217,8 @@ function setStatus(code, currentStatus) {
         document.getElementById("malotg-my_score").selectedIndex = malToIndexScore(currentStatus.my_score);
         document.getElementById("malotg-my_start_date").value = currentStatus.my_start_date;
         document.getElementById("malotg-my_finish_date").value = currentStatus.my_finish_date;
+        document.getElementById("malotg-my_tags").value = currentStatus.my_tags;
+        document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + currentStatus.series_animedb_id + "/edit";
     }
 }
 

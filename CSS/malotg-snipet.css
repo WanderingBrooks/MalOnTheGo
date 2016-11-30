@@ -3,22 +3,31 @@
     font-size: 13px;
 }
 
-#malotg-series_title {
+.malotg-links {
     text-decoration: none;
-    color: #0A6DA4;
+    color: #1d439b;
 }
-#malotg-series_title:hover {
-    text-decoration: underline;
+.malotg-links:hover{
+    text-decoration: underline !important;
 }
+
 #malotg>div {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-#malotg>div>label {
-    width: 130px;
+.value-label {
     font-size: 11px;
-    display:inline-block;
+}
+
+.malotg-label-input {
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+}
+
+.malotg-input {
+    margin-left: 20px;
 }
 
 #malotg-my_watched_episodes {
@@ -26,14 +35,42 @@
 }
 
 #malotg-info {
-    font-size: 25px;
+    margin-left: 70px;
+    font-size: 15px;
     font-weight: bold;
 }
 
 #malotg-buttons {
-    margin-left: 75px;
+    margin-left: 65px;
 }
 
+#malotg-advanced {
+    display: none;
+}
+
+#malotg-hide-advanced {
+    display: none;
+}
+
+.malotg-clear-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #1d439b;
+    text-align: center;
+}
+
+#malotg-show-hide {
+    margin-left: 70px;
+}
+
+#malotg-more-options {
+    margin-left: 40px;
+}
+
+#malotg-my_tags {
+    resize: none;
+}
 #malotg-buttons>button {
     margin-right: 30px;
     border-style: solid;

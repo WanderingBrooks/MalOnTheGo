@@ -3,5 +3,6 @@
 3. Move the other ajax to sendRequest
 4. https://developer.chrome.com/webstore/user_data
 5. Create something anyone can use we have the code base just make it generic in Content
-6. In page alert user that its been saved correctly on crunchyroll or whatever
+6. Link to go to users mal page
 7. In page alert user that something failed
+8. Update and then jump to the more options
