@@ -3,7 +3,7 @@
 
   "name": "MalOnTheGo Alpha",
   "description": "Update your MyAnimeList from crunchyroll.com",
-  "version": "0.4",
+  "version": "0.5",
 
   "browser_action": {
     "default_icon": "images/icon.png",

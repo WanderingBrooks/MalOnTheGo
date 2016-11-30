@@ -26,15 +26,15 @@ chrome.runtime.onMessage.addListener(
         }
         /*Ajax post to add a new anime to a users list */
         else if (request.message === "add") {
-            getCredentialsAndSend(request.message, request.data, request.id);
+            getCredentialsAndSend(request.message, request.data, request.id, request.advancedOptions);
         }
         /* Ajax post to update an anime currently in a users list */
         else if (request.message === "update") {
-            getCredentialsAndSend(request.message, request.data, request.id);
+            getCredentialsAndSend(request.message, request.data, request.id, request.advancedOptions);
         }
         /* Ajax post to delete an anime in a users list */
         else if (request.message === "delete") {
-            getCredentialsAndSend(request.message, request.data, request.id);
+            getCredentialsAndSend(request.message, request.data, request.id, false);
         }
     }
 );
@@ -55,10 +55,6 @@ function objectToXML(object, rootName) {
     return xmlDoc;
 }
 
-/*Tells the user to email me because a post went wrong */
-function postToMalFail(jqXHR, textStatus, errorThrown) {
-    sendInfo("Posting the data failed pleas email cs.jasonbrooks@gmail.com ");
-}
 // Tells the user to email me because something went wrong
 function userFail() {
     alert("An error occurred getting your user values please email cs.jasonbrooks@gmail.com");
@@ -233,7 +229,7 @@ function determineShow(data) {
                     }
                     // If we got a hit
                     if ($animeID != -1) {
-                        getCredentialsAndSend("user values", {"title": $animeTitle, "episodes": $animeEpisodes}, $animeID);
+                        getCredentialsAndSend("user values", {"title": $animeTitle, "episodes": $animeEpisodes}, $animeID, false);
                     }
                     // If we did not
                     else {
@@ -256,7 +252,7 @@ function determineShow(data) {
 }
 
 // Grouping of Ajaxes makes them call back functions for help with asynchronous programming
-function getCredentialsAndSend(mode, data, id) {
+function getCredentialsAndSend(mode, data, id, advanceOptions) {
     var user;
     var password;
     chrome.storage.local.get('malotgData',
@@ -264,7 +260,7 @@ function getCredentialsAndSend(mode, data, id) {
             if (!chrome.runtime.error) {
                 user = result.malotgData.username;
                 password = result.malotgData.password;
-                sendRequest(mode, data, id, user, password);
+                sendRequest(mode, data, id, advanceOptions, user, password);
             }
             else {
                 alert("chrome.runtime.error: Failed to retrieve your credentials");
@@ -274,7 +270,7 @@ function getCredentialsAndSend(mode, data, id) {
 }
 
 // Function that contains all the ajaxes differentiate between them with the variable mode
-function sendRequest(mode, data, id,  user, password) {
+function sendRequest(mode, data, id,  advanceOptions, user, password) {
     if (mode == "add") {
         var xml = objectToXML(data, "entry");
         var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
@@ -283,7 +279,7 @@ function sendRequest(mode, data, id,  user, password) {
             "type": "POST",
             "data": {"data": xmlString},
             "success": getInfo,
-            "error": postToMalFail,
+            "error": getInfo,
             "username": user,
             "password": password
         });
@@ -296,7 +292,7 @@ function sendRequest(mode, data, id,  user, password) {
             "type": "POST",
             "data": {"data": xmlString},
             "success": getInfo,
-            "error": postToMalFail,
+            "error": getInfo,
             "username": user,
             "password": password
         });
@@ -306,7 +302,7 @@ function sendRequest(mode, data, id,  user, password) {
             "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
             "type": "POST",
             "success": getInfo,
-            "error": postToMalFail,
+            "error": getInfo,
             "username": user,
             "password": password
         });
@@ -320,17 +316,20 @@ function sendRequest(mode, data, id,  user, password) {
             "error": userFail
         });
     }
-}
-/* Sends information to be displayed to the user*/
-function sendInfo(text) {
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        var activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, {"message": "information update", "text": text});
-    });
+
+    /* Sends information to be displayed to the user*/
+    function sendInfo(text) {
+        chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+            var activeTab = tabs[0];
+            chrome.tabs.sendMessage(activeTab.id, {"message": "information update", "data": {"id": id}, "advancedOptions": advanceOptions, "text": text});
+        });
+    }
+
+    function getInfo(data, textStatus, jqXHR) {
+        sendInfo(jqXHR.responseText);
+    }
+
 }
 
-function getInfo(data, textStatus, jqXHR) {
-    sendInfo(jqXHR.responseText);
-}
 
 

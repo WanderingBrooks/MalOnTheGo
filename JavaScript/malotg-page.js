@@ -20,6 +20,10 @@ chrome.runtime.onMessage.addListener(
 
         else if ( request.message === "information update") {
             if (document.getElementById("malotg")) {
+                if (request.advancedOptions) {
+                    window.open("https://myanimelist.net/ownlist/anime/" + request.data.id  +"/edit", '_blank');
+
+                }
                 document.getElementById("malotg-info").textContent = request.text;
                 setTimeout(function() {
                     document.getElementById('malotg-info').textContent = 'MalOnTheGo';
@@ -74,13 +78,14 @@ $(document).ready(function() {
 });
 
 function createListeners(code, id) {
-
+    var advancedOptions = false;
     function submitListener() {
 
         if (code === -1) {
             code = 0;
             chrome.runtime.sendMessage({
                 "message": "add",
+                "advancedOptions": advancedOptions,
                 "data": {
                     "episode": document.getElementById("malotg-my_watched_episodes").value,
                     "status": indexToMalStatus(document.getElementById("malotg-my_status").selectedIndex),
@@ -104,6 +109,7 @@ function createListeners(code, id) {
         else if (code === 0) {
             chrome.runtime.sendMessage({
                 "message": "update",
+                "advancedOptions": advancedOptions,
                 "data": {
                     "episode": document.getElementById("malotg-my_watched_episodes").value,
                     "status": indexToMalStatus(document.getElementById("malotg-my_status").selectedIndex),
@@ -157,13 +163,10 @@ function createListeners(code, id) {
             }
         }
         // This function submits to make sure that no user info is lost before going to myanimelist
-        // The timeout function is there so the window opens after the data has been sent to myanimelist
-        // Should it be a calback?
         function moreOptionsListener() {
+            advancedOptions = true;
             submitListener();
-            setTimeout(function() {
-                window.open("https://myanimelist.net/ownlist/anime/" + id  +"/edit", '_blank');
-            }, 350);
+            advancedOptions = false;
 
         }
 
