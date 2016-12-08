@@ -1,8 +1,15 @@
-1. ctrl shft t if there is more than one crunchyroll what happens
-2. Add a login html to be loaded on crunchyroll
-3. Move the other ajax to sendRequest
-4. https://developer.chrome.com/webstore/user_data
-5. Create something anyone can use we have the code base just make it generic in Content
-6. Link to go to users mal page
+Making generic
+Location is a function is that ok?
+should their be many functions to interface with or one that controls everything?
+To make the rest of backend abstract fromm chrome need to find out how normal website backend frontend communicate
+
+
+
+
+1.
+2. ctrl shft t if there is more than one crunchyroll what happens
+3. Add a login html to be loaded on crunchyroll
+4. Move the other ajax to sendRequest
+5. https://developer.chrome.com/webstore/user_data
+6. Create something anyone can use we have the code base just make it generic in Content
 7. In page alert user that something failed
-8. Update and then jump to the more options
