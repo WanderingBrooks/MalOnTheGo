@@ -46,12 +46,20 @@ $(document).ready(function() {
             var movie = $("#showmedia_about_episode_num").text();
             // If the user isn't logged in the paths above do not work
             if (document.getElementById("showmedia_free_trial_signup")) {
-                aboveVideo = $("#template_body > div.showmedia-trail.cf > div > h1 > a > span").text();
+                aboveVideo = $("#template_body > div:nth-child(6) > div.showmedia-trail.cf > div > h1 > a > span").text();
             }
             if (aboveVideo.indexOf(" (Uncensored)") != -1) {
-                aboveVideo = aboveVideo.substring(0, aboveVideo.indexOf("(Uncensored)"));
+                aboveVideo = aboveVideo.substring(0, aboveVideo.indexOf(" (Uncensored)"));
             }
-            if (movie.charAt(0) != " ") {
+            if (aboveVideo.indexOf(" (Subtitled)") != -1) {
+                aboveVideo = aboveVideo.substring(0, aboveVideo.indexOf(" (Subtitled)"));
+            }
+            if (aboveVideo.indexOf(" (Dubbed)") != -1) {
+                alert(aboveVideo);
+                aboveVideo = aboveVideo.substring(0, aboveVideo.indexOf(" (Dubbed)"));
+                alert(aboveVideo.length);
+            }
+            if (movie.length > belowVideo.length && belowVideo != "") {
                 chrome.runtime.sendMessage({
                     "message": "get info",
                     "data": {
@@ -65,9 +73,11 @@ $(document).ready(function() {
             else {
                 chrome.runtime.sendMessage({
                     "message": "get info",
-                    "url": URL,
-                    "aboveVideo": aboveVideo,
-                    "movie": movie
+                    "data": {
+                        "url": URL,
+                        "aboveVideo": aboveVideo,
+                        "movie": movie
+                    }
                 });
             }
         }

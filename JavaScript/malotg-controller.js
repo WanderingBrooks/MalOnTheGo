@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener(
             var key;
             for (var i = 0; i <  keys.length; i++) {
                 key = keys[i];
-                titles.push(request.data[key]);
+                titles[i] = request.data[key];
             }
             searchAndFindShow(titles);
         }
