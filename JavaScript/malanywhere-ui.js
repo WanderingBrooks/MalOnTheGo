@@ -2,7 +2,7 @@
  * Created by Jason on 12/8/2016.
  */
 
-function malotgControl(request) {
+function malanywhereUIController(request) {
     if( request.message === ("show hide") ) {
         // does the Element actually exist
         if (document.getElementById("malotg")) {
@@ -17,14 +17,12 @@ function malotgControl(request) {
     }
     // Inject HTML snippet into page
     else if ( request.message === "set status" ) {
-        inject(request.injectLocation, request.code, request.values);
+        inject(request.injectLocation, request.fileLocation, request.code, request.values);
     }
-
     else if ( request.message === "information update") {
         if (document.getElementById("malotg")) {
             if (request.advancedOptions) {
-                window.open("https://myanimelist.net/ownlist/anime/" + request.data.id  +"/edit", '_blank');
-
+                openEditPage(request.data.id);
             }
             document.getElementById("malotg-info").textContent = request.text;
             setTimeout(function() {
@@ -36,14 +34,16 @@ function malotgControl(request) {
 
 }
 
-function createListeners(code, id) {
+function createListeners(code, previousStatus) {
     var advancedOptions = false;
+
     function submitListener() {
 
         if (code === -1) {
             code = 0;
-            chrome.runtime.sendMessage({
-                "message": "add",
+            var info = {
+                "message": "AUD",
+                "type": "add",
                 "advancedOptions": advancedOptions,
                 "data": {
                     "episode": document.getElementById("malotg-my_watched_episodes").value,
@@ -61,13 +61,15 @@ function createListeners(code, id) {
                     "comments": "",
                     "tags": ""
                 },
-                "id": id
-            });
+                "id": previousStatus.series_animedb_id
+            };
+            malanywhereAUD(info);
         }
 
         else if (code === 0) {
-            chrome.runtime.sendMessage({
-                "message": "update",
+            var info = {
+                "message": "AUD",
+                "type": "update",
                 "advancedOptions": advancedOptions,
                 "data": {
                     "episode": document.getElementById("malotg-my_watched_episodes").value,
@@ -85,21 +87,23 @@ function createListeners(code, id) {
                     "comments": "",
                     "tags": document.getElementById("malotg-my_tags").value
                 },
-                "id": id
-            });
+                "id": previousStatus.series_animedb_id
+            };
+            malanywhereAUD(info);
         }
 
     }
 
-
-
     function deleteListener() {
         code = -1;
-        chrome.runtime.sendMessage({
-            "message": "delete",
-            "id": id,
+        var info = {
+            "message": "AUD",
+            "type": "delete",
+            "id": previousStatus.series_animedb_id,
             "data": -1
-        });
+        };
+        malanywhereAUD(info);
+        setStatus(-1, previousStatus);
     }
 
     function showListener() {
@@ -123,10 +127,16 @@ function createListeners(code, id) {
     }
     // This function submits to make sure that no user info is lost before going to myanimelist
     function moreOptionsListener() {
-        advancedOptions = true;
-        submitListener();
-        advancedOptions = false;
-
+        if ( statusChange(previousStatus) ) {
+            alert("changes");
+            advancedOptions = true;
+            submitListener();
+            advancedOptions = false;
+        }
+        else {
+            alert("no changes");
+            openEditPage(previousStatus.series_animedb_id);
+        }
     }
 
     $("#malotg-submit").on("click", submitListener);
@@ -161,6 +171,9 @@ function setStatus(code, currentStatus) {
         document.getElementById("malotg-my_watched_episodes").value = 0;
         document.getElementById("malotg-series_episodes").textContent = currentStatus.series_episodes;
         document.getElementById("malotg-my_score").selectedIndex = 0;
+        document.getElementById("malotg-my_start_date").value = "";
+        document.getElementById("malotg-my_finish_date").value = "";
+        document.getElementById("malotg-my_tags").value = "";
         document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + currentStatus.series_animedb_id     + "/edit";
     }
     else if (code == 0) {
@@ -183,15 +196,15 @@ function setStatus(code, currentStatus) {
     }
 }
 
-function inject(injectLocation, code, currentStatus) {
+function inject(injectLocation, fileLocation, code, currentStatus) {
     var div = document.createElement("div");
     div.id = "malotg";
-    $.get(chrome.extension.getURL('/HTML/malotg-snipet.html'), function(data) {
+    $.get(fileLocation, function(data) {
         div.innerHTML = data;
         injectLocation(div);
         document.getElementById("malotg").style.display = "none";
         setStatus(code, currentStatus);
-        createListeners(code, currentStatus.series_animedb_id);
+        createListeners(code, currentStatus);
         $( function() {
             $( "#malotg-my_start_date" ).datepicker({changeMonth: true,
                 changeYear: true});
@@ -242,4 +255,18 @@ function indexToMalStatus(index) {
     else {
         return index + 1;
     }
+}
+
+function statusChange(originalStatus) {
+    return document.getElementById("malotg-my_status").selectedIndex != malToIndexStatus(originalStatus.my_status) ||
+        document.getElementById("malotg-my_watched_episodes").value != originalStatus.my_watched_episodes ||
+        document.getElementById("malotg-series_episodes").textContent != originalStatus.series_episodes ||
+        document.getElementById("malotg-my_score").selectedIndex != malToIndexScore(originalStatus.my_score) ||
+        document.getElementById("malotg-my_start_date").value != originalStatus.my_start_date ||
+        document.getElementById("malotg-my_finish_date").value != originalStatus.my_finish_date ||
+        document.getElementById("malotg-my_tags").value != originalStatus.my_tags;
+}
+
+function openEditPage(id) {
+    window.open("https://myanimelist.net/ownlist/anime/" + id  +"/edit", '_blank');
 }

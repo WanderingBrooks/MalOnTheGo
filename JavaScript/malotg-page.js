@@ -4,6 +4,7 @@ chrome.runtime.onMessage.addListener(function(request) {
         request.message = "show hide";
     }
     if (request.message === "set status") {
+        request.fileLocation = chrome.extension.getURL('/HTML/malotg-snipet.html');
         request.injectLocation =  function(div) {
             var sidebar = document.getElementById("sidebar");
             if (document.getElementById("showmedia_free_trial_signup")) {
@@ -13,9 +14,8 @@ chrome.runtime.onMessage.addListener(function(request) {
                 sidebar.insertBefore(div, sidebar.childNodes[0]);
             }
         };
-
     }
-    malotgControl(request);
+    malanywhereUIController(request);
 });
 
 $(document).ready(function() {
@@ -24,6 +24,7 @@ $(document).ready(function() {
     if (URL.indexOf("crunchyroll.com") != -1) {
         // Has to be on the episode page other wise we don't do anything
         if (document.getElementById("showmedia_video")) {
+            var titles = [];
             var aboveVideo = $("#template_body > div.new_layout.new_layout_wide > div.showmedia-trail.cf > div > h1 > a > span").text();
             var belowVideo = $("#showmedia_about_episode_num > a").text();
             var movie = $("#showmedia_about_episode_num").text();
@@ -39,37 +40,33 @@ $(document).ready(function() {
                 aboveVideo = aboveVideo.substring(0, aboveVideo.indexOf(" (Subtitled)"));
             }
             if (aboveVideo.indexOf(" (Dubbed)") != -1) {
-                alert(aboveVideo);
                 aboveVideo = aboveVideo.substring(0, aboveVideo.indexOf(" (Dubbed)"));
-                alert(aboveVideo.length);
             }
+            titles[0] = aboveVideo;
+            titles[1] = URL;
             if (movie.length > belowVideo.length && belowVideo != "") {
-                chrome.runtime.sendMessage({
-                    "message": "get info",
-                    "data": {
-                        "url": URL,
-                        "aboveVideo": aboveVideo,
-                        "belowVideo": belowVideo
-                    }
-
-                });
+                titles[2] = belowVideo;
             }
             else {
-                chrome.runtime.sendMessage({
-                    "message": "get info",
-                    "data": {
-                        "url": URL,
-                        "aboveVideo": aboveVideo,
-                        "movie": movie
-                    }
-                });
+                titles[2] = movie;
             }
+            chrome.runtime.sendMessage({
+                "message": "get info",
+                "data": {
+                    "titles": titles
+                }
+            });
         }
     }
 
 
 
 });
+
+// Function to add update or delete sends to back end.
+function malanywhereAUD(info) {
+    chrome.runtime.sendMessage(info);
+}
 
 // Parses the given crunchyroll url for the title of the show
 function parseCR(URL) {

@@ -8,7 +8,24 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     });
 });
 
-// Called when the content script finds the required fields for the website
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse ) {
-    controller(request);
+    malanywhereController(request);
 });
+
+function malanywhereGetCredentials(callback) {
+    chrome.storage.local.get('malotgData', callback);
+}
+
+// If getting the credentials from chrome.storage fails
+function chromeGetFail() {
+    alert("chrome.runtime.error: Failed to retrieve your credentials");
+}
+
+function malanywhereSendInfo(data) {
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+        var activeTab = tabs[0];
+        chrome.tabs.sendMessage(activeTab.id, data);
+    });
+}
+

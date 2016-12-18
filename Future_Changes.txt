@@ -2,9 +2,11 @@ Making generic
 Location is a function is that ok?
 should their be many functions to interface with or one that controls everything?
 To make the rest of backend abstract fromm chrome need to find out how normal website backend frontend communicate
+Advanced options works too often if someone deletes and the values don't change if they click on advances options itll resave
+First part fixed now need to update the previous status but is this good design??
 
-
-
+Importatn!!!
+    Make malanywhere api one scope
 
 1.
 2. ctrl shft t if there is more than one crunchyroll what happens

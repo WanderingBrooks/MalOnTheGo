@@ -21,12 +21,12 @@
       "matches": [
         "*://www.crunchyroll.com/*"
       ],
-      "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malanywhere-ui.0.5.1.js", "JavaScript/malotg-page.js"],
+      "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malanywhere-ui.js", "JavaScript/malotg-page.js"],
       "css": ["CSS/jquery-ui.min.css", "CSS/malotg-snipet.css"]
     }
   ],
   "background": {
-    "scripts": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/malanywhere-.0.5.1.js", "JavaScript/malotg-controller.js"],
+    "scripts": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/malanywhere.js", "JavaScript/malotg-controller.js"],
     "persistent": false
   },
 
