@@ -157,6 +157,12 @@ function setStatus(code, currentStatus) {
         document.getElementById("malotg-my_score").disabled = true;
         document.getElementById("malotg-my_finish_date").disabled = true;
         document.getElementById("malotg-my_start_date").disabled = true;
+        document.getElementById("malotg-show-advanced").disabled = true;
+        document.getElementById("malotg-hide-advanced").disabled = true;
+        document.getElementById("malotg-my_tags").disabled = true;
+        document.getElementById("malotg-more-options").disabled = true;
+        document.getElementById("malotg-submit").disabled = true;
+        document.getElementById("malotg-delete").disabled = true;
     }
     else if (code == -1) {
         if (currentStatus.series_episodes == 0) {
@@ -203,8 +209,10 @@ function inject(injectLocation, fileLocation, code, currentStatus) {
         div.innerHTML = data;
         injectLocation(div);
         document.getElementById("malotg").style.display = "none";
+        if (code != -2) {
+            createListeners(code, currentStatus);
+        }
         setStatus(code, currentStatus);
-        createListeners(code, currentStatus);
         $( function() {
             $( "#malotg-my_start_date" ).datepicker({changeMonth: true,
                 changeYear: true});
