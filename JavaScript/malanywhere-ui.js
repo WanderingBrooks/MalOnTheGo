@@ -177,6 +177,13 @@ function createListeners(code, previousStatus) {
         malanywhereRequest(info);
     }
 
+    function deleteCredentialsListener() {
+        var info = {
+            "message": "delete credentials"
+        };
+        malanywhereRequest(info);
+    }
+
     // Function that turns the password input from password to txt and vise versa
     function togglePassword(){
         var password = document.getElementById("malotg-password");
@@ -195,7 +202,8 @@ function createListeners(code, previousStatus) {
     $("#malotg-more-options").on("click", moreOptionsListener);
     $("#malotg-hide-login").on("click", hideLoginListener);
     $("#malotg-show-login").on("click", showLoginListener);
-    $("#malotg-save").on("click", saveCredentialsListener);
+    $("#malotg-in").on("click", saveCredentialsListener);
+    $("#malotg-out").on("click", deleteCredentialsListener);
     $("#malotg-showhide-password").on("click", togglePassword);
 
 
@@ -207,8 +215,18 @@ function setStatus(code, currentStatus) {
     if (code == -2) {
         document.getElementById("malotg-values").style.display = "none";
         document.getElementById("malotg-login").style.display = "inline";
+        document.getElementById("malotg-show-login").style.display = "none";
+        document.getElementById("malotg-hide-login").style.display = "inline";
+        document.getElementById("malotg-in").style.display = "inline";
+        document.getElementById("malotg-out").style.display = "none";
     }
     else if (code == -1) {
+        document.getElementById("malotg-values").style.display = "inline";
+        document.getElementById("malotg-login").style.display = "none";
+        document.getElementById("malotg-show-login").style.display = "inline";
+        document.getElementById("malotg-hide-login").style.display = "none";
+        document.getElementById("malotg-in").style.display = "none";
+        document.getElementById("malotg-out").style.display = "inline";
         document.getElementById("malotg-series_title").textContent = "Anime Not Found";
         document.getElementById("malotg-series_title").href = "https://myanimelist.net/" + "404" + "/";
         document.getElementById("malotg-my_status").disabled = true;
@@ -232,6 +250,12 @@ function setStatus(code, currentStatus) {
         else {
             document.getElementById("malotg-my_watched_episodes").max = currentStatus.series_episodes;
         }
+        document.getElementById("malotg-values").style.display = "inline";
+        document.getElementById("malotg-login").style.display = "none";
+        document.getElementById("malotg-show-login").style.display = "inline";
+        document.getElementById("malotg-hide-login").style.display = "none";
+        document.getElementById("malotg-in").style.display = "none";
+        document.getElementById("malotg-out").style.display = "inline";
         document.getElementById("malotg-series_title").textContent = currentStatus.series_title;
         document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + currentStatus.series_animedb_id + "/" ;
         document.getElementById("malotg-my_status").selectedIndex = 0;
@@ -252,6 +276,12 @@ function setStatus(code, currentStatus) {
         else {
             document.getElementById("malotg-my_watched_episodes").max = currentStatus.series_episodes;
         }
+        document.getElementById("malotg-values").style.display = "inline";
+        document.getElementById("malotg-login").style.display = "none";
+        document.getElementById("malotg-show-login").style.display = "inline";
+        document.getElementById("malotg-hide-login").style.display = "none";
+        document.getElementById("malotg-in").style.display = "none";
+        document.getElementById("malotg-out").style.display = "inline";
         document.getElementById("malotg-series_title").textContent = currentStatus.series_title;
         document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + currentStatus.series_animedb_id + "/" ;
         document.getElementById("malotg-my_status").selectedIndex = malToIndexStatus(currentStatus.my_status);

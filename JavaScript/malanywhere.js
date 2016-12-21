@@ -230,7 +230,11 @@ function malanywhereController(request) {
     }
 
     else if (request.message === "save credentials") {
-        getCredentialsAndSend("verify", request.data, -1);
+        sendRequest("verify", request.data, -1, request.data.user, request.data.password);
+    }
+
+    else if (request.message === "delete credentials") {
+        malanywhereDeleteCredentials();
     }
 
     // Grouping of Ajaxes makes them call back functions for help with asynchronous programming

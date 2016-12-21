@@ -27,6 +27,10 @@ function malanywhereGetCredentials(callback) {
     });
 }
 
+function malanywhereDeleteCredentials() {
+    chrome.storage.local.clear(insertLogin);
+}
+
 // If getting the credentials from chrome.storage fails
 function chromeGetFail() {
     alert("chrome.runtime.error: Failed to retrieve your credentials");

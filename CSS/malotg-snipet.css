@@ -21,8 +21,13 @@
     margin-bottom: 10px;
 }
 
-#malotg-save {
-    margin-left: 65px;
+#malotg-in {
+    display: none;
+    margin-left: 30px;
+}
+
+#malotg-out {
+    margin-left: 30px;
 }
 
 .value-label {
