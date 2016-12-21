@@ -1,4 +1,4 @@
-#malotg {
+#malanywhere {
     font-family: Verdana, Arial;
     font-size: 13px;
 }
@@ -11,12 +11,22 @@
     text-decoration: underline !important;
 }
 
-#malotg>div {
+#malotg-login>div {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
+#malotg-values>div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#malotg-save {
+    margin-left: 65px;
+}
+
 .value-label {
+    cursor: default;
     font-size: 11px;
 }
 
@@ -40,7 +50,7 @@
     font-weight: bold;
 }
 
-#malotg-buttons {
+#malotg-values-buttons {
     margin-left: 65px;
 }
 
@@ -48,7 +58,15 @@
     display: none;
 }
 
+#malotg-login {
+    display: none;
+}
+
 #malotg-hide-advanced {
+    display: none;
+}
+
+#malotg-hide-login {
     display: none;
 }
 
@@ -60,7 +78,7 @@
     text-align: center;
 }
 
-#malotg-show-hide {
+.malotg-show-hide {
     margin-left: 70px;
 }
 
@@ -71,7 +89,7 @@
 #malotg-my_tags {
     resize: none;
 }
-#malotg-buttons>button {
+.malotg-normal-buttons {
     margin-right: 30px;
     border-style: solid;
     border-top-width: 1px;
@@ -91,7 +109,7 @@
     cursor: pointer;
 }
 
-#malotg-buttons>button:disabled {
+.malotg-normal-buttons:disabled {
     cursor: default;
     background-color: #6c8cd8;
     color: #FFF;

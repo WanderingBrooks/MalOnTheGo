@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener(function(request) {
     if ( request.message === "clicked_browser_action" ) {
         request.message = "show hide";
     }
-    if (request.message === "set status") {
+    else if (request.message === "set status") {
         request.fileLocation = chrome.extension.getURL('/HTML/malotg-snipet.html');
         request.injectLocation =  function(div) {
             var sidebar = document.getElementById("sidebar");
@@ -18,9 +18,11 @@ chrome.runtime.onMessage.addListener(function(request) {
     malanywhereUIController(request);
 });
 
-$(document).ready(function() {
+$(document).ready(sendTitles);
+
+function sendTitles() {
     var URL = document.URL;
-    // Were onn Crunchyroll
+    // Were on Crunchyroll
     if (URL.indexOf("crunchyroll.com") != -1) {
         // Has to be on the episode page other wise we don't do anything
         if (document.getElementById("showmedia_video")) {
@@ -58,13 +60,10 @@ $(document).ready(function() {
             });
         }
     }
-
-
-
-});
+}
 
 // Function to add update or delete sends to back end.
-function malanywhereAUD(info) {
+function malanywhereRequest(info) {
     chrome.runtime.sendMessage(info);
 }
 

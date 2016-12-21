@@ -1,17 +1,17 @@
-Making generic
-Location is a function is that ok?
-should their be many functions to interface with or one that controls everything?
-To make the rest of backend abstract fromm chrome need to find out how normal website backend frontend communicate
-Advanced options works too often if someone deletes and the values don't change if they click on advances options itll resave
-First part fixed now need to update the previous status but is this good design??
+Things to fix
+    1. Are there changes if so save them before going to mal
+    2. Move options page to be loaded on the page and not in the chrome exstension
+    3. Change html fields from malotg -> malanywhere
+    4. Rename set status to something that makes more sense, as it also controls logging in
+    5. Where should inject login be? and how should the callback for getting credentials work
+    6. Only time I need to reinitalize everything is if the user changes their credentials, I save them nad then I call the function that initliazes everything when the page loads,
+       Then check if the div has already been created and if it has
+    7. Something should change with getCrednetialsAndSend it dosent seem that well designed now we only get crednetials once
 
-Importatn!!!
-    Make malanywhere api one scope
+Code Table
+    -2: Insert Login
+    -1: Insert Error show not found
+     0: Anime found but user does not have it on their list
+     1: Anime is on Mal and the user has values already stored
 
-1.
-2. ctrl shft t if there is more than one crunchyroll what happens
-3. Add a login html to be loaded on crunchyroll
-4. Move the other ajax to sendRequest
-5. https://developer.chrome.com/webstore/user_data
-6. Create something anyone can use we have the code base just make it generic in Content
-7. In page alert user that something failed
+Problem here I Also want the user to be able to see their credentials, If its either or loaded, should both be loaded and and one be hidden?

@@ -4,24 +4,24 @@
 
 // Saves the users credentials in chrome local as an object called malotgData
 function saveUserCredentials() {
-        var username = document.getElementById("malotg-username").value;
-        var password = document.getElementById("malotg-password").value;
-        var data = {"username": username, "password": password};
-         chrome.storage.local.set(
-             {"malotgData": data},
-             function() {
-                 if (chrome.runtime.error) {
-                     document.getElementById('malotg-update').textContent = 'Failed to save credentials';
-                     setTimeout(function() {
-                         document.getElementById('malotg-update').textContent = 'Input your MyAnimeList credentials';
-                     }, 1000);
-                 }
-                 else {
-                     document.getElementById('malotg-update').textContent = 'Credentials are valid and have been saved.';
-                     setTimeout(function() {
-                         document.getElementById('malotg-update').textContent = 'Input your MyAnimeList credentials';
-                     }, 1000);
-                 }});
+    var username = document.getElementById("malotg-username").value;
+    var password = document.getElementById("malotg-password").value;
+    var data = {"username": username, "password": password};
+    chrome.storage.local.set(
+        {"malotgData": data},
+        function() {
+            if (chrome.runtime.error) {
+                document.getElementById('malotg-update').textContent = 'Failed to save credentials';
+                setTimeout(function() {
+                    document.getElementById('malotg-update').textContent = 'Input your MyAnimeList credentials';
+                }, 1000);
+            }
+            else {
+                document.getElementById('malotg-update').textContent = 'Credentials are valid and have been saved.';
+                setTimeout(function() {
+                    document.getElementById('malotg-update').textContent = 'Input your MyAnimeList credentials';
+                }, 1000);
+            }});
 
 
 
