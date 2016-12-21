@@ -1,13 +1,12 @@
 function malanywhereController(request) {
-
+    var localUser;
+    var localPassword;
     if (request.message === "get info") {
 
         // Initializes the values for how many ajaxes should return how many have returned and the data returned by them
         var expectedCount = request.data.titles.length;
         var activeCount = 0;
         var results = [];
-        var localUser;
-        var localPassword;
         malanywhereGetCredentials(
             function (user, password) {
                 localUser = user;
@@ -78,7 +77,7 @@ function malanywhereController(request) {
                     }
                     // If we got a hit
                     if ($animeID != -1) {
-                        getCredentialsAndSend("user values", {
+                        sendRequest("user values", {
                             "title": $animeTitle,
                             "episodes": $animeEpisodes
                         }, $animeID, false);
@@ -202,7 +201,7 @@ function malanywhereController(request) {
     }
 
     else if (request.message === "AUD") {
-        getCredentialsAndSend(request.type, request.data, request.id);
+        sendRequest(request.type, request.data, request.id);
 
 
         /* Converts a object to an xml tree */
@@ -237,17 +236,8 @@ function malanywhereController(request) {
         malanywhereDeleteCredentials();
     }
 
-    // Grouping of Ajaxes makes them call back functions for help with asynchronous programming
-    function getCredentialsAndSend(mode, data, id) {
-        malanywhereGetCredentials(
-            function (user, password) {
-                sendRequest(mode, data, id, user, password);
-            });
-
-    }
-
     // Function that contains all the ajaxes differentiate between them with the variable mode
-    function sendRequest(mode, data, id, user, password) {
+    function sendRequest(mode, data, id) {
         if (mode == "add") {
             var xml = objectToXML(data, "entry");
             var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
@@ -257,8 +247,8 @@ function malanywhereController(request) {
                 "data": {"data": xmlString},
                 "success": getInfo,
                 "error": getInfo,
-                "username": user,
-                "password": password
+                "username": localUser,
+                "password": localPassword
             });
         }
         else if (mode == "update") {
@@ -270,8 +260,8 @@ function malanywhereController(request) {
                 "data": {"data": xmlString},
                 "success": getInfo,
                 "error": getInfo,
-                "username": user,
-                "password": password
+                "username": localUser,
+                "password": localPassword
             });
         }
         else if (mode === "delete") {
@@ -280,15 +270,15 @@ function malanywhereController(request) {
                 "type": "POST",
                 "success": getInfo,
                 "error": getInfo,
-                "username": user,
-                "password": password
+                "username": localUser,
+                "password": localPassword
             });
         }
         else if (mode == "user values") {
             $.ajax({
                 "url": "http://myanimelist.net/malappinfo.php",
-                "data": {"u": user, "status": "all", "type": "anime"},
-                "success": findAnimeCreator(id, data.title, data.episodes, user, password),
+                "data": {"u": localUser, "status": "all", "type": "anime"},
+                "success": findAnimeCreator(id, data.title, data.episodes),
                 "dataType": "xml",
                 "error": userFail
             });
@@ -300,8 +290,8 @@ function malanywhereController(request) {
                 "success": determineShow,
                 "dataType": "xml",
                 "async": false,
-                "username": user,
-                "password": password
+                "username": localUser,
+                "password": localPassword
             })
         }
         else if (mode === "verify") {
