@@ -1,12 +1,10 @@
 Things to fix
-    1. Are there changes if so save them before going to mal That works but if you save I should update the current status by making
-        it a "global variable" in the ui controller
-    2. Change html fields from malotg -> malanywhere
-    3. Rename set status to something that makes more sense, as it also controls logging in
-    4. rename localUser and localPassword it dose'nt really make sense
-    5. Good comments/ Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
-    6. Add autoupdate functionality
-    7. Clean up css
+    1. Change html fields from malotg -> malanywhere
+    2. Rename set status to something that makes more sense, as it also controls logging in
+    3. rename localUser and localPassword it dose'nt really make sense
+    4. Good comments/ Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
+    5. Add autoupdate functionality
+    6. Clean up css
 
 
 

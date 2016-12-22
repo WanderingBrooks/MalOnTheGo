@@ -254,12 +254,6 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-password").value = valuesOnMal.password;
             }
             else if (request.code == 0) {
-                if (request.series_episodes == 0) {
-                    request.series_episodes = "?"
-                }
-                else {
-                    document.getElementById("malotg-my_watched_episodes").max = request.series_episodes;
-                }
                 document.getElementById("malotg-values").style.display = "inline";
                 document.getElementById("malotg-login").style.display = "none";
                 document.getElementById("malotg-show-login").style.display = "inline";
@@ -270,7 +264,7 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/" ;
                 document.getElementById("malotg-my_status").selectedIndex = 0;
                 document.getElementById("malotg-my_watched_episodes").value = 0;
-                document.getElementById("malotg-series_episodes").textContent = valuesOnMal.series_episodes;
+                unknownEpisodes();
                 document.getElementById("malotg-my_score").selectedIndex = 0;
                 document.getElementById("malotg-my_start_date").value = "";
                 document.getElementById("malotg-my_finish_date").value = "";
@@ -280,12 +274,6 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-password").value = valuesOnMal.password;
             }
             else if (request.code == 1) {
-                if (valuesOnMal.series_episodes == 0) {
-                    valuesOnMal.series_episodes = "?"
-                }
-                else {
-                    document.getElementById("malotg-my_watched_episodes").max = valuesOnMal.series_episodes;
-                }
                 document.getElementById("malotg-values").style.display = "inline";
                 document.getElementById("malotg-login").style.display = "none";
                 document.getElementById("malotg-show-login").style.display = "inline";
@@ -296,7 +284,7 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/" ;
                 document.getElementById("malotg-my_status").selectedIndex = malToIndexStatus(valuesOnMal.my_status);
                 document.getElementById("malotg-my_watched_episodes").value = valuesOnMal.my_watched_episodes;
-                document.getElementById("malotg-series_episodes").textContent = valuesOnMal.series_episodes;
+                unknownEpisodes();
                 document.getElementById("malotg-my_score").selectedIndex = malToIndexScore(valuesOnMal.my_score);
                 document.getElementById("malotg-my_start_date").value = formatDate(valuesOnMal.my_start_date);
                 document.getElementById("malotg-my_finish_date").value = formatDate(valuesOnMal.my_finish_date);
@@ -413,8 +401,17 @@ function malanywhereUIController(request) {
         }
     }
 
+    /*If there are an unknown number of episodes because the show is airing MAL stores
+    * a 0 as the total number of episodes this checks if that is the case*/
+    function unknownEpisodes() {
+        if (valuesOnMal.series_episodes == 0) {
+            document.getElementById("malotg-series_episodes").textContent = "?"
+        }
+        else {
+            document.getElementById("malotg-my_watched_episodes").max = valuesOnMal.series_episodes;
+            document.getElementById("malotg-series_episodes").textContent = valuesOnMal.series_episodes;
+
+        }
+    }
+
 }
-
-
-
-
