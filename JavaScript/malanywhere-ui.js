@@ -3,6 +3,7 @@
  */
 
 function malanywhereUIController(request) {
+    var valuesOnMal;
     if( request.message === ("show hide") ) {
         // does the Element actually exist
         if (document.getElementById("malanywhere")) {
@@ -17,15 +18,16 @@ function malanywhereUIController(request) {
     }
     // Inject HTML snippet into page
     else if ( request.message === "set status" ) {
-        inject(request.injectLocation, request.fileLocation, request.code, request.values);
+        valuesOnMal = request.values;
+        inject();
 
-        function createListeners(code, previousStatus) {
+        function createListeners() {
             var advancedOptions = false;
 
             function submitListener() {
 
-                if (code === 0) {
-                    code = 1;
+                if (request.code === 0) {
+                    request.code = 1;
                     var info = {
                         "message": "AUD",
                         "type": "add",
@@ -46,12 +48,13 @@ function malanywhereUIController(request) {
                             "comments": "",
                             "tags": ""
                         },
-                        "id": previousStatus.series_animedb_id
+                        "id": valuesOnMal.series_animedb_id
                     };
                     malanywhereRequest(info);
+                    malanywhereUpdateValues();
                 }
 
-                else if (code === 1) {
+                else if (request.code === 1) {
                     var info = {
                         "message": "AUD",
                         "type": "update",
@@ -72,23 +75,26 @@ function malanywhereUIController(request) {
                             "comments": "",
                             "tags": document.getElementById("malotg-my_tags").value
                         },
-                        "id": previousStatus.series_animedb_id
+                        "id": valuesOnMal.series_animedb_id
                     };
                     malanywhereRequest(info);
+                    malanywhereUpdateValues();
                 }
 
             }
 
             function deleteListener() {
-                code = 0;
+                request.code = 0;
                 var info = {
                     "message": "AUD",
                     "type": "delete",
-                    "id": previousStatus.series_animedb_id,
+                    "id": valuesOnMal.series_animedb_id,
                     "data": -1
                 };
                 malanywhereRequest(info);
-                setStatus(0, previousStatus);
+                setStatus();
+                malanywhereUpdateValues();
+
             }
 
             function showAdvancedListener() {
@@ -111,25 +117,41 @@ function malanywhereUIController(request) {
                 }
             }
 
-            function statusChange(originalStatus) {
-                return document.getElementById("malotg-my_status").selectedIndex != malToIndexStatus(originalStatus.my_status) ||
-                    document.getElementById("malotg-my_watched_episodes").value != originalStatus.my_watched_episodes ||
-                    document.getElementById("malotg-series_episodes").textContent != originalStatus.series_episodes ||
-                    document.getElementById("malotg-my_score").selectedIndex != malToIndexScore(originalStatus.my_score) ||
-                    document.getElementById("malotg-my_start_date").value != originalStatus.my_start_date ||
-                    document.getElementById("malotg-my_finish_date").value != originalStatus.my_finish_date ||
-                        document.getElementById("malotg-my_tags").value != originalStatus.my_tags;
+            function statusChange() {
+                return document.getElementById("malotg-my_status").selectedIndex != malToIndexStatus(valuesOnMal.my_status) ||
+                    document.getElementById("malotg-my_watched_episodes").value != valuesOnMal.my_watched_episodes ||
+                    document.getElementById("malotg-series_episodes").textContent != valuesOnMal.series_episodes ||
+                    document.getElementById("malotg-my_score").selectedIndex != malToIndexScore(valuesOnMal.my_score) ||
+                    document.getElementById("malotg-my_start_date").value != formatDate(valuesOnMal.my_start_date) ||
+                    document.getElementById("malotg-my_finish_date").value != formatDate(valuesOnMal.my_finish_date) ||
+                    document.getElementById("malotg-my_tags").value != valuesOnMal.my_tags;
+            }
+
+            function malanywhereUpdateValues() {
+                    valuesOnMal = {
+                        "series_title": valuesOnMal.series_title,
+                        "my_status": indexToMalStatus(document.getElementById("malotg-my_status").selectedIndex),
+                        "my_score": indexToMalScore(document.getElementById("malotg-my_score").selectedIndex),
+                        "series_episodes": valuesOnMal.series_episodes,
+                        "my_watched_episodes": document.getElementById("malotg-my_watched_episodes").value,
+                        "my_start_date": document.getElementById("malotg-my_start_date").value.split("/").join(""),
+                        "my_finish_date": document.getElementById("malotg-my_finish_date").value.split("/").join(""),
+                        "my_tags": document.getElementById("malotg-my_tags").value,
+                        "series_animedb_id": valuesOnMal.series_animedb_id,
+                        "user": valuesOnMal.user,
+                        "password": valuesOnMal.password
+                    }
             }
 
             // This function submits to make sure that no user info is lost before going to myanimelist
             function moreOptionsListener() {
-                if ( statusChange(previousStatus) ) {
+                if ( statusChange() ) {
                     advancedOptions = true;
                     submitListener();
                     advancedOptions = false;
                 }
                 else {
-                    openEditPage(previousStatus.series_animedb_id);
+                    openEditPage(valuesOnMal.series_animedb_id);
                 }
             }
 
@@ -201,8 +223,8 @@ function malanywhereUIController(request) {
 
         }
 
-        function setStatus(code, currentStatus) {
-            if (code == -2) {
+        function setStatus() {
+            if (request.code == -2) {
                 document.getElementById("malotg-values").style.display = "none";
                 document.getElementById("malotg-login").style.display = "inline";
                 document.getElementById("malotg-show-login").style.display = "none";
@@ -210,7 +232,7 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-in").style.display = "inline";
                 document.getElementById("malotg-out").style.display = "none";
             }
-            else if (code == -1) {
+            else if (request.code == -1) {
                 document.getElementById("malotg-values").style.display = "inline";
                 document.getElementById("malotg-login").style.display = "none";
                 document.getElementById("malotg-show-login").style.display = "inline";
@@ -228,15 +250,15 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-more-options").disabled = true;
                 document.getElementById("malotg-submit").disabled = true;
                 document.getElementById("malotg-delete").disabled = true;
-                document.getElementById("malotg-username").value = currentStatus.user;
-                document.getElementById("malotg-password").value = currentStatus.password;
+                document.getElementById("malotg-username").value = valuesOnMal.user;
+                document.getElementById("malotg-password").value = valuesOnMal.password;
             }
-            else if (code == 0) {
-                if (currentStatus.series_episodes == 0) {
-                    currentStatus.series_episodes = "?"
+            else if (request.code == 0) {
+                if (request.series_episodes == 0) {
+                    request.series_episodes = "?"
                 }
                 else {
-                    document.getElementById("malotg-my_watched_episodes").max = currentStatus.series_episodes;
+                    document.getElementById("malotg-my_watched_episodes").max = request.series_episodes;
                 }
                 document.getElementById("malotg-values").style.display = "inline";
                 document.getElementById("malotg-login").style.display = "none";
@@ -244,25 +266,25 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-hide-login").style.display = "none";
                 document.getElementById("malotg-in").style.display = "none";
                 document.getElementById("malotg-out").style.display = "inline";
-                document.getElementById("malotg-series_title").textContent = currentStatus.series_title;
-                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + currentStatus.series_animedb_id + "/" ;
+                document.getElementById("malotg-series_title").textContent = valuesOnMal.series_title;
+                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/" ;
                 document.getElementById("malotg-my_status").selectedIndex = 0;
                 document.getElementById("malotg-my_watched_episodes").value = 0;
-                document.getElementById("malotg-series_episodes").textContent = currentStatus.series_episodes;
+                document.getElementById("malotg-series_episodes").textContent = valuesOnMal.series_episodes;
                 document.getElementById("malotg-my_score").selectedIndex = 0;
                 document.getElementById("malotg-my_start_date").value = "";
                 document.getElementById("malotg-my_finish_date").value = "";
                 document.getElementById("malotg-my_tags").value = "";
-                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + currentStatus.series_animedb_id + "/edit";
-                document.getElementById("malotg-username").value = currentStatus.user;
-                document.getElementById("malotg-password").value = currentStatus.password;
+                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + valuesOnMal.series_animedb_id + "/edit";
+                document.getElementById("malotg-username").value = valuesOnMal.user;
+                document.getElementById("malotg-password").value = valuesOnMal.password;
             }
-            else if (code == 1) {
-                if (currentStatus.series_episodes == 0) {
-                    currentStatus.series_episodes = "?"
+            else if (request.code == 1) {
+                if (valuesOnMal.series_episodes == 0) {
+                    valuesOnMal.series_episodes = "?"
                 }
                 else {
-                    document.getElementById("malotg-my_watched_episodes").max = currentStatus.series_episodes;
+                    document.getElementById("malotg-my_watched_episodes").max = valuesOnMal.series_episodes;
                 }
                 document.getElementById("malotg-values").style.display = "inline";
                 document.getElementById("malotg-login").style.display = "none";
@@ -270,31 +292,31 @@ function malanywhereUIController(request) {
                 document.getElementById("malotg-hide-login").style.display = "none";
                 document.getElementById("malotg-in").style.display = "none";
                 document.getElementById("malotg-out").style.display = "inline";
-                document.getElementById("malotg-series_title").textContent = currentStatus.series_title;
-                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + currentStatus.series_animedb_id + "/" ;
-                document.getElementById("malotg-my_status").selectedIndex = malToIndexStatus(currentStatus.my_status);
-                document.getElementById("malotg-my_watched_episodes").value = currentStatus.my_watched_episodes;
-                document.getElementById("malotg-series_episodes").textContent = currentStatus.series_episodes;
-                document.getElementById("malotg-my_score").selectedIndex = malToIndexScore(currentStatus.my_score);
-                document.getElementById("malotg-my_start_date").value = currentStatus.my_start_date;
-                document.getElementById("malotg-my_finish_date").value = currentStatus.my_finish_date;
-                document.getElementById("malotg-my_tags").value = currentStatus.my_tags;
-                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + currentStatus.series_animedb_id + "/edit";
-                document.getElementById("malotg-username").value = currentStatus.user;
-                document.getElementById("malotg-password").value = currentStatus.password;
+                document.getElementById("malotg-series_title").textContent = valuesOnMal.series_title;
+                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/" ;
+                document.getElementById("malotg-my_status").selectedIndex = malToIndexStatus(valuesOnMal.my_status);
+                document.getElementById("malotg-my_watched_episodes").value = valuesOnMal.my_watched_episodes;
+                document.getElementById("malotg-series_episodes").textContent = valuesOnMal.series_episodes;
+                document.getElementById("malotg-my_score").selectedIndex = malToIndexScore(valuesOnMal.my_score);
+                document.getElementById("malotg-my_start_date").value = formatDate(valuesOnMal.my_start_date);
+                document.getElementById("malotg-my_finish_date").value = formatDate(valuesOnMal.my_finish_date);
+                document.getElementById("malotg-my_tags").value = valuesOnMal.my_tags;
+                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + valuesOnMal.series_animedb_id + "/edit";
+                document.getElementById("malotg-username").value = valuesOnMal.user;
+                document.getElementById("malotg-password").value = valuesOnMal.password;
             }
         }
 
-        function inject(injectLocation, fileLocation, code, currentStatus) {
+        function inject() {
             if (!(document.getElementById("malanywhere"))) {
                 var div = document.createElement("div");
                 div.id = "malanywhere";
-                $.get(fileLocation, function (data) {
+                $.get(request.fileLocation, function (data) {
                     div.innerHTML = data;
-                    injectLocation(div);
+                    request.injectLocation(div);
                     document.getElementById("malanywhere").style.display = "none";
-                    createListeners(code, currentStatus);
-                    setStatus(code, currentStatus);
+                    createListeners();
+                    setStatus();
                     $(function () {
                         $("#malotg-my_start_date").datepicker({
                             changeMonth: true,
@@ -309,7 +331,7 @@ function malanywhereUIController(request) {
                 });
             }
             else {
-                setStatus(code, currentStatus);
+                setStatus();
                 document.getElementById("malanywhere").style.display = "inline";
             }
 
@@ -374,6 +396,20 @@ function malanywhereUIController(request) {
         }
         else {
             return index + 1;
+        }
+    }
+
+    /* Formats the My anime list formatted date to human readable version
+     * Input is text not a JQUERY object*/
+    function formatDate(date) {
+        if (date === '0000-00-00') {
+            return '';
+        }
+        else if (date === "") {
+            return "";
+        }
+        else {
+            return date.substring(5, 7) + "/" + date.substring(8) + "/" + date.substring(0, 4);
         }
     }
 

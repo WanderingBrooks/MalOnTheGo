@@ -59,7 +59,7 @@ function malanywhereSaveCredentials(user, password) {
                     malanywhereSendInfo({
                         "message": "information update",
                         "code": -1,
-                        "text": 'Credentials are valid and have been saved.'
+                        "text": ' Saved Credentials'
                     });
                 }
 

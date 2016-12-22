@@ -121,8 +121,6 @@ function malanywhereController(request) {
                 // If the id has been found send the pertinent information to be displayed
                 if ($animeID.text() != -1) {
                     var $anime = $animeID.parent();
-                    var $my_start_date = formatDate($anime.find("my_start_date").text());
-                    var $my_finish_date = formatDate($anime.find("my_finish_date").text());
                     malanywhereSendInfo({
                         "message": "set status",
                         "code": 1,
@@ -132,8 +130,8 @@ function malanywhereController(request) {
                             "my_score": $anime.find("my_score").text(),
                             "series_episodes": $anime.find("series_episodes").text(),
                             "my_watched_episodes": $anime.find("my_watched_episodes").text(),
-                            "my_start_date": $my_start_date,
-                            "my_finish_date": $my_finish_date,
+                            "my_start_date": $anime.find("my_start_date").text(),
+                            "my_finish_date": $anime.find("my_finish_date").text(),
                             "my_tags": $anime.find("my_tags").text(),
                             "series_animedb_id": id,
                             "user": localUser,
@@ -164,17 +162,6 @@ function malanywhereController(request) {
             }
 
             return findAnime;
-        }
-
-        /* Formats the My anime list formatted date to human readable version
-         * Input is text not a JQUERY object*/
-        function formatDate(date) {
-            if (date === '0000-00-00') {
-                return '';
-            }
-            else {
-                return date.substring(5, 7) + "/" + date.substring(8) + "/" + date.substring(0, 4);
-            }
         }
 
         // If the anime was not found in the Mal database send an error to be displayed to the user
