@@ -148,10 +148,10 @@ function malanywhereController(request) {
                         "code": 0,
                         "values": {
                             "series_title": title,
-                            "my_status": "",
-                            "my_score": "",
+                            "my_status": "1",
+                            "my_score": "0",
                             "series_episodes": episodes,
-                            "my_watched_episodes": "",
+                            "my_watched_episodes": "0",
                             "my_start_date": "",
                             "my_finish_date": "",
                             "my_tags": "",
@@ -202,30 +202,6 @@ function malanywhereController(request) {
 
     else if (request.message === "AUD") {
         sendRequest(request.type, request.data, request.id);
-
-
-        /* Converts a object to an xml tree */
-        /* Objects should only be mappings from strings to primitive types strings, booleans, numbers (NOT OBJECTS, OR ARRAYS, OR FUNCTION or ...) */
-        function objectToXML(object, rootName) {
-            var xmlDoc = document.implementation.createDocument("", rootName, null);
-            var keys = Object.keys(object);
-            for (var i = 0; i < keys.length; i++) {
-
-                var key = keys[i];
-                var value = object[key];
-
-                var xmlNode = xmlDoc.createElement(key);
-                xmlDoc.documentElement.appendChild(xmlNode);
-                xmlNode.appendChild(xmlDoc.createTextNode(value));
-            }
-            return xmlDoc;
-        }
-
-        // Tells the user to email me because something went wrong
-        function userFail() {
-            alert("An error occurred getting your user values please email cs.jasonbrooks@gmail.com");
-        }
-
     }
 
     else if (request.message === "save credentials") {
@@ -314,6 +290,28 @@ function malanywhereController(request) {
             });
         }
 
+    }
+
+    /* Converts a object to an xml tree */
+    /* Objects should only be mappings from strings to primitive types strings, booleans, numbers (NOT OBJECTS, OR ARRAYS, OR FUNCTION or ...) */
+    function objectToXML(object, rootName) {
+        var xmlDoc = document.implementation.createDocument("", rootName, null);
+        var keys = Object.keys(object);
+        for (var i = 0; i < keys.length; i++) {
+
+            var key = keys[i];
+            var value = object[key];
+
+            var xmlNode = xmlDoc.createElement(key);
+            xmlDoc.documentElement.appendChild(xmlNode);
+            xmlNode.appendChild(xmlDoc.createTextNode(value));
+        }
+        return xmlDoc;
+    }
+
+    // Tells the user to email me because something went wrong
+    function userFail() {
+        alert("An error occurred getting your user values please email cs.jasonbrooks@gmail.com");
     }
 
 }

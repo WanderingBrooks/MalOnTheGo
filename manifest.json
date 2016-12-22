@@ -32,12 +32,6 @@
 
   "web_accessible_resources": [
     "HTML/malotg-snipet.html",
-    "CSS/malotg-snipet.css",
-    "CSS/malotg-options.css"
-    ],
-
-  "options_ui": {
-    "page": "HTML/malotg-options.html",
-    "chrome_style": true
-  }
+    "CSS/malotg-snipet.css"
+    ]
 }
