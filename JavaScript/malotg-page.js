@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener(function(request) {
     if ( request.message === "clicked_browser_action" ) {
         request.message = "show hide";
     }
-    else if (request.message === "set status") {
+    else if (request.message === "set values") {
         request.fileLocation = chrome.extension.getURL('/HTML/malotg-snipet.html');
         request.injectLocation =  function(div) {
             var sidebar = document.getElementById("sidebar");

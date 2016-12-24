@@ -1,10 +1,7 @@
 Things to fix
-    1. Change html fields from malotg -> malanywhere
-    2. Rename set status to something that makes more sense, as it also controls logging in
-    3. rename localUser and localPassword it dose'nt really make sense
-    4. Good comments/ Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
-    5. Add autoupdate functionality
-    6. Clean up css
+    1. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
+    2. Clean up css
+    3  Add a button to hide everything ??? is that good?
 
 
 
