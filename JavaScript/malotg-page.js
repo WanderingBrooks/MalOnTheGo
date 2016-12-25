@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(function(request) {
         request.message = "show hide";
     }
     else if (request.message === "set values") {
-        request.fileLocation = chrome.extension.getURL('/HTML/malotg-snipet.html');
+        request.fileLocation = chrome.extension.getURL('/HTML/malanywhere-snipet.html');
         request.injectLocation =  function(div) {
             var sidebar = document.getElementById("sidebar");
             if (document.getElementById("showmedia_free_trial_signup")) {

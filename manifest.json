@@ -22,7 +22,7 @@
         "*://www.crunchyroll.com/*"
       ],
       "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malanywhere-ui.js", "JavaScript/malotg-page.js"],
-      "css": ["CSS/jquery-ui.min.css", "CSS/malotg-snipet.css"]
+      "css": ["CSS/jquery-ui.min.css", "CSS/malanywhere-snipet.css"]
     }
   ],
   "background": {
@@ -31,7 +31,7 @@
   },
 
   "web_accessible_resources": [
-    "HTML/malotg-snipet.html",
-    "CSS/malotg-snipet.css"
+    "HTML/malanywhere-snipet.html",
+    "CSS/malanywhere-snipet.css"
     ]
 }
