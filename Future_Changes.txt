@@ -1,7 +1,9 @@
 Things to fix
-    1. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
-    2. Clean up css
-    3  Add a button to hide everything ??? is that good?
+    1. Clean up css maybe done
+    2. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
+    3. Write documentation for the api and chrome extension
+    4. Public release?
+
 
 
 

@@ -11,22 +11,16 @@
     text-decoration: underline !important;
 }
 
-#malanywhere-login>div {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-#malanywhere-values>div {
+#malanywhere-login>div, #malanywhere-values>div  {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
 #malanywhere-in {
     display: none;
-    margin-left: 30px;
 }
 
-#malanywhere-out {
+#malanywhere-out, #malanywhere-in {
     margin-left: 30px;
 }
 
@@ -59,19 +53,7 @@
     margin-left: 65px;
 }
 
-#malanywhere-advanced {
-    display: none;
-}
-
-#malanywhere-login {
-    display: none;
-}
-
-#malanywhere-hide-advanced {
-    display: none;
-}
-
-#malanywhere-hide-login {
+#malanywhere-hide-advanced, #malanywhere-hide-login, #malanywhere-login, #malanywhere-advanced {
     display: none;
 }
 
@@ -87,11 +69,7 @@
     margin-left: 70px;
 }
 
-#malanywhere-show-login {
-    margin-left: 10px;
-}
-
-#malanywhere-hide-login {
+#malanywhere-show-login, #malanywhere-hide-login {
     margin-left: 10px;
 }
 
