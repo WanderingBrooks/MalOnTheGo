@@ -1,8 +1,10 @@
 Things to fix
-    1. Clean up css maybe done
-    2. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
-    3. Write documentation for the api and chrome extension
-    4. Public release?
+    1. Querying to figure out the right tab, To do that need title
+    2. Add the advanced button mal uses it fill up space and looks good
+    3. Clean up css maybe done
+    4. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
+    5. Write documentation for the api and chrome extension
+    6. Public release?
 
 
 

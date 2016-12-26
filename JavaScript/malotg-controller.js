@@ -1,11 +1,15 @@
 
 // Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function (tab) {
-    // Send a message to the active tab
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        var activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-    });
+       malanywhereSendInfo({"message": "show hide"});
+        chrome.browserAction.getTitle({}, function (title) {
+            if (title === "Hide MalOTG") {
+                chrome.browserAction.setTitle({"title": "Show MalOTG"})
+            }
+            else if (title === "Show MalOTG") {
+                chrome.browserAction.setTitle({"title": "Hide MalOTG"})
+            }
+        });
 });
 
 

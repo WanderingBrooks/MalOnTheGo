@@ -7,7 +7,7 @@
 
   "browser_action": {
     "default_icon": "images/icon.png",
-	"default_title": "Hide/Show"
+	"default_title": "Hide MalOTG"
   },
   "permissions": [
     "activeTab",

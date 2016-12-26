@@ -1,11 +1,8 @@
 // Message passing listener
 chrome.runtime.onMessage.addListener(function(request) {
-    if ( request.message === "clicked_browser_action" ) {
-        request.message = "show hide";
-    }
-    else if (request.message === "set values") {
+    if (request.message === "set values") {
         request.fileLocation = chrome.extension.getURL('/HTML/malanywhere-snipet.html');
-        request.injectLocation =  function(div) {
+        request.injectLocation = function (div) {
             var sidebar = document.getElementById("sidebar");
             if (document.getElementById("showmedia_free_trial_signup")) {
                 sidebar.insertBefore(div, sidebar.childNodes[2]);
@@ -13,6 +10,7 @@ chrome.runtime.onMessage.addListener(function(request) {
             else {
                 sidebar.insertBefore(div, sidebar.childNodes[0]);
             }
+            div.setAttribute("class", "showmedia-leftbox clearfix large-margin-bottom");
         };
     }
     malanywhereUIController(request);
