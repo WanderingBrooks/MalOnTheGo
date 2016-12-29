@@ -50,7 +50,7 @@ function malanywhereUIController(request) {
                         },
                         "id": valuesOnMal.series_animedb_id
                     };
-                    malanywhereRequest(info);
+                    malanywhereRequest(info, request);
                     malanywhereUpdateValues();
                 }
 
@@ -77,7 +77,7 @@ function malanywhereUIController(request) {
                         },
                         "id": valuesOnMal.series_animedb_id
                     };
-                    malanywhereRequest(info);
+                    malanywhereRequest(info, request);
                     malanywhereUpdateValues();
                 }
 
@@ -91,7 +91,7 @@ function malanywhereUIController(request) {
                     "id": valuesOnMal.series_animedb_id,
                     "data": -1
                 };
-                malanywhereRequest(info);
+                malanywhereRequest(info, request);
                 setValues();
                 malanywhereUpdateValues();
 
@@ -185,14 +185,14 @@ function malanywhereUIController(request) {
                         "password": password
                     }
                 };
-                malanywhereRequest(info);
+                malanywhereRequest(info, request);
             }
 
             function deleteCredentialsListener() {
                 var info = {
                     "message": "delete credentials"
                 };
-                malanywhereRequest(info);
+                malanywhereRequest(info, request);
             }
 
             // Function that turns the password input from password to txt and vise versa
@@ -333,7 +333,7 @@ function malanywhereUIController(request) {
                 openEditPage(request.data.id);
             }
             if (request.code == -1) {
-                sendTitles();
+                malanywheresendTitles(request);
             }
             document.getElementById("malanywhere-info").textContent = request.text;
             setTimeout(function() {

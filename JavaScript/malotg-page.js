@@ -16,9 +16,9 @@ chrome.runtime.onMessage.addListener(function(request) {
     malanywhereUIController(request);
 });
 
-$(document).ready(sendTitles);
+$(document).ready(malanywheresendTitles);
 
-function sendTitles() {
+function malanywheresendTitles(request) {
     var URL = document.URL;
     // Were on Crunchyroll
     if (URL.indexOf("crunchyroll.com") != -1) {
@@ -54,14 +54,16 @@ function sendTitles() {
                 "message": "get info",
                 "data": {
                     "titles": titles
-                }
+                },
+                "url": document.URL
             });
         }
     }
 }
 
 // Function to add update or delete sends to back end.
-function malanywhereRequest(info) {
+function malanywhereRequest(info, request) {
+    info.url = document.URL;
     chrome.runtime.sendMessage(info);
 }
 

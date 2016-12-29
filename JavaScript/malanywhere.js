@@ -12,7 +12,7 @@ function malanywhereController(request) {
                 user = u;
                 password = p;
                 malanywhereSearch(u, p);
-            });
+            }, request);
 
         function malanywhereSearch(user, password) {
             // Do a search for every title given to maximize the chance of getting a hit
@@ -137,7 +137,7 @@ function malanywhereController(request) {
                             "user": user,
                             "password": password
                         }
-                    });
+                    }, request);
                 }
                 // If it wasn't found in the users list send the information we have to be displayed allows updating
                 else {
@@ -157,7 +157,7 @@ function malanywhereController(request) {
                             "user": user,
                             "password": password
                         }
-                    });
+                    }, request);
                 }
             }
 
@@ -182,7 +182,7 @@ function malanywhereController(request) {
                     "user": user,
                     "password": password
                 }
-            });
+            }, request);
         }
 
     }
@@ -196,7 +196,15 @@ function malanywhereController(request) {
     }
 
     else if (request.message === "delete credentials") {
-        malanywhereDeleteCredentials();
+        malanywhereDeleteCredentials(request);
+    }
+
+    else if (request.message === "send login") {
+            malanywhereSendInfo({
+                "message": "set values",
+                "code": -2,
+                "values": -2
+            }, request);
     }
 
     // Function that contains all the ajaxes differentiate between them with the variable mode
@@ -263,7 +271,7 @@ function malanywhereController(request) {
                 "error": getInfo,
                 "username": data.user,
                 "password": data.password,
-                "success": malanywhereSaveCredentials(data.user, data.password)
+                "success": malanywhereSaveCredentials(data.user, data.password, request)
             });
         }
 
@@ -274,7 +282,7 @@ function malanywhereController(request) {
                 "code": 2,
                 "advancedOptions": request.advancedOptions,
                 "text": jqXHR.responseText
-            });
+            }, request);
         }
 
     }
@@ -301,14 +309,6 @@ function malanywhereController(request) {
         alert("An error occurred getting your user values please email cs.jasonbrooks@gmail.com");
     }
 
-}
-
-function insertLogin() {
-    malanywhereSendInfo({
-        "message": "set values",
-        "code": -2,
-        "values": -2
-    });
 }
 
 

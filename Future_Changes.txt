@@ -1,13 +1,16 @@
 Things to fix
-    1. Querying to figure out the right tab, To do that need title
-    2. Add the advanced button mal uses it fill up space and looks good
+    1. Add the advanced button mal uses it fill up space and looks good
+    2. Should there be a tag or different buttons to denote if the anime is actually on the users list
     3. Clean up css maybe done
     4. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
     5. Write documentation for the api and chrome extension
     6. Public release?
 
 
-
+Things to note:
+    the request is passed to every function that the user has to define so if they need extra info passed
+    in the object thy can access it wherever they neeed it. An example where its useful si chrome.tabs.query to find the right tab
+    I need the URL so I pass that in the request object to be accessed later.
 
 Code Table
     -2: Insert Login hide everything else
