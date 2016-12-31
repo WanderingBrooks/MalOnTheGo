@@ -1,15 +1,18 @@
 Things to fix
-    1. Add the advanced button mal uses it fill up space and looks good
-    2. Should there be a tag or different buttons to denote if the anime is actually on the users list
-    3. Clean up css maybe done
-    4. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
-    5. Write documentation for the api and chrome extension
-    6. Public release?
+    1. Clean up css maybe done
+    2. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
+    3. Write documentation for the api and chrome extension
+    4. Add the advanced button mal uses it fill up space and looks good
+    5. If an ajax fails send info to the front end to be displayed.
+    6. Move Advanced options to the set status instead of passing it to the back end Almost works
+       Problem is that when going to hte back end it seems variables are deleted or uninitialized
+    7. Should there be a tag or different buttons to denote if the anime is actually on the users list
+    8. Public release?
 
 
 Things to note:
     the request is passed to every function that the user has to define so if they need extra info passed
-    in the object thy can access it wherever they neeed it. An example where its useful si chrome.tabs.query to find the right tab
+    in the object thy can access it wherever they need it. An example where its useful si chrome.tabs.query to find the right tab
     I need the URL so I pass that in the request object to be accessed later.
 
 Code Table

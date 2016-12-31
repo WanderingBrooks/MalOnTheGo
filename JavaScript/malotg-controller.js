@@ -12,11 +12,11 @@ chrome.browserAction.onClicked.addListener(function (tab) {
         });
 });
 
-
+// Listener for the backend looks for requests from the front end then delegates the message to the backend
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse ) {
     malanywhereController(request);
 });
-
+// get the users credentials then calls the call back passing the username and password as parameters
 function malanywhereGetCredentials(callback, request) {
     chrome.storage.local.get('malotgData', function (result) {
         if (!chrome.runtime.error) {
@@ -30,7 +30,7 @@ function malanywhereGetCredentials(callback, request) {
         }
     });
 }
-
+// Deletes the users credentials
 function malanywhereDeleteCredentials(request) {
     chrome.storage.local.clear(function() {
         malanywhereController({"message": "send login", "url": request.url})
@@ -42,14 +42,17 @@ function chromeGetFail() {
     alert("chrome.runtime.error: Failed to retrieve your credentials");
 }
 
+// Sends the given data to the tab or tabs that are on the same page
 function malanywhereSendInfo(data, request) {
     chrome.tabs.query({"url": request.url}, function (tabs) {
-        var activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, data);
+        for (var i = 0; i < tabs.length; i++) {
+            chrome.tabs.sendMessage(tabs[i].id, data);
+        }
+
     });
 }
 
-/*Does the request have the correct credentials atm should I jsut send the request*/
+/* Saves the given username and password */
 function malanywhereSaveCredentials(user, password, request) {
     function saveCredentials() {
         var data = {"username": user, "password": password};

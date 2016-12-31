@@ -1,5 +1,7 @@
 // Message passing listener
 chrome.runtime.onMessage.addListener(function(request) {
+    // If the backend is sending set status this needs to set the file location and the inject location so the frontend
+    // can inject the correct code in the right palce.
     if (request.message === "set values") {
         request.fileLocation = chrome.extension.getURL('/HTML/malanywhere-snipet.html');
         request.injectLocation = function (div) {
@@ -15,15 +17,16 @@ chrome.runtime.onMessage.addListener(function(request) {
     }
     malanywhereUIController(request);
 });
-
-$(document).ready(malanywheresendTitles);
-
-function malanywheresendTitles(request) {
+// WHen the document is loaded the process begins
+$(document).ready(malanywhereSendTitles);
+// Grabs the titles from the page and makes any necessary changes to those titles so they will show up on the Mal search
+function malanywhereSendTitles(request) {
     var URL = document.URL;
     // Were on Crunchyroll
     if (URL.indexOf("crunchyroll.com") != -1) {
         // Has to be on the episode page other wise we don't do anything
         if (document.getElementById("showmedia_video")) {
+            malanywhereUIController({"message": "initialize"});
             var titles = [];
             var aboveVideo = $("#template_body > div.new_layout.new_layout_wide > div.showmedia-trail.cf > div > h1 > a > span").text();
             var belowVideo = $("#showmedia_about_episode_num > a").text();
