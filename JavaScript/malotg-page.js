@@ -55,10 +55,7 @@ function malanywhereSendTitles(request) {
             }
             chrome.runtime.sendMessage({
                 "message": "get info",
-                "data": {
-                    "titles": titles
-                },
-                "url": document.URL
+                "titles": titles
             });
         }
     }

@@ -8,6 +8,11 @@ Things to fix
        Problem is that when going to hte back end it seems variables are deleted or uninitialized
     7. Should there be a tag or different buttons to denote if the anime is actually on the users list
     8. Public release?
+    9. Only show the hide/show when on a valid site
+       that's not part of the api though
+    10. Send a JSON or XML file from the backend because whoever uses the api very well may not be writing in Javascript
+    11. Fix Permissions on Chrome Extension
+
 
 
 Things to note:
@@ -20,3 +25,5 @@ Code Table
     -1: Insert Error show not found
      0: Anime found but user does not have it on their list
      1: Anime is on Mal and the user has values already stored
+
+

@@ -217,10 +217,8 @@ function malanywhereUIController(request) {
                 var password = document.getElementById("malanywhere-password").value;
                 var info = {
                     "message": "save credentials",
-                    "data": {
-                        "user": username,
-                        "password": password
-                    }
+                    "user": username,
+                    "password": password
                 };
                 malanywhereRequest(info, request);
             }

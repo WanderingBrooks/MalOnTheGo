@@ -8,22 +8,13 @@
     5. send login: sends the code to the front end saying that the user isn't logged in
  */
 function malanywhereController(request) {
-    // Declares a local copy of the username and password
-    var user;
-    var password;
     if (request.message === "get info") {
 
         // Initializes the values for how many ajaxes should return how many have returned and the data returned by them
         var expectedCount = request.data.titles.length;
         var activeCount = 0;
         var results = [];
-        // Get the users credentials, update the local copy, and search mal for the titles
-        malanywhereGetCredentials(
-            function (u, p) {
-                user = u;
-                password = p;
-                malanywhereSearch(u, p);
-            }, request);
+        malanywhereSearch(request.user, request.password);
         // Does a search of mal for every given title
         function malanywhereSearch(user, password) {
             for (var i = 0; i < request.data.titles.length; i++) {
@@ -201,14 +192,8 @@ function malanywhereController(request) {
         sendRequest(request.type, request.data, request.id);
     }
 
-    else if (request.message === "save credentials") {
-        user = request.data.user;
-        password = request.data.password;
-        sendRequest("verify", request.data, -1);
-    }
-
-    else if (request.message === "delete credentials") {
-        malanywhereDeleteCredentials(request);
+    else if (request.message === "verify") {
+        sendRequest(request.message, request.user, request.password -1);
     }
 
     else if (request.message === "send login") {
