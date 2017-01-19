@@ -84,7 +84,8 @@ function malanywhereUIController(request) {
                             "comments": "",
                             "tags": ""
                         },
-                        "id": valuesOnMal.series_animedb_id
+                        "id": valuesOnMal.series_animedb_id,
+                        "advancedOptions": advancedOptions
                     };
                     malanywhereRequest(info, request);
                     malanywhereUpdateValues();
@@ -109,7 +110,8 @@ function malanywhereUIController(request) {
                             "comments": "",
                             "tags": document.getElementById("malanywhere-my_tags").value
                         },
-                        "id": valuesOnMal.series_animedb_id
+                        "id": valuesOnMal.series_animedb_id,
+                        "advancedOptions": advancedOptions
                     };
                     malanywhereRequest(info, request);
                     malanywhereUpdateValues();
@@ -346,8 +348,8 @@ function malanywhereUIController(request) {
     // Update malanywhere-info and check advanced options
     else if ( request.message === "information update" ) {
         if (document.getElementById("malanywhere")) {
-            if (advancedOptions) {
-                openEditPage(request.data.id);
+            if (request.advancedOptions) {
+                openEditPage(request.id);
                 advancedOptions = false;
             }
             if (request.code == -1) {

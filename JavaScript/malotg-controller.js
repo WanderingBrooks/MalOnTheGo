@@ -109,14 +109,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                    malanywhereSendInfo({
                        "message": "information update",
                        "code": 2,
-                       "text": jqXHR.responseText + " " + textStatus
+                       "text": jqXHR.responseText,
+                       "advancedOptions": request.advancedOptions,
+                       "id": request.id
                    }, sender.tab)
                },
                function (data, textStatus, jqXHR) {
                    malanywhereSendInfo({
                        "message": "information update",
                        "code": 2,
-                       "text": jqXHR.responseText
+                       "text": jqXHR.responseText,
+                       "advancedOptions": request.advancedOptions,
+                       "id": request.id
                    }, sender.tab);
                });
         });
@@ -128,14 +132,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     malanywhereSendInfo({
                         "message": "information update",
                         "code": 2,
-                        "text": jqXHR.responseText
+                        "text": jqXHR.responseText,
+                        "advancedOptions": request.advancedOptions,
+                        "id": request.id
                     }, sender.tab)
                 },
                 function (data, textStatus, jqXHR) {
                     malanywhereSendInfo({
                         "message": "information update",
                         "code": 2,
-                        "text": jqXHR.responseText
+                        "text": jqXHR.responseText,
+                        "advancedOptions": request.advancedOptions,
+                        "id": request.id
                     }, sender.tab);
                 });
         });
