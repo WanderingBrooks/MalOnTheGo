@@ -67,8 +67,7 @@ function malanywhereUIController(request) {
                 if (request.code === 0) {
                     request.code = 1;
                     var info = {
-                        "message": "AUD",
-                        "type": "add",
+                        "message": "add",
                         "data": {
                             "episode": document.getElementById("malanywhere-my_watched_episodes").value,
                             "status": indexToMalStatus(document.getElementById("malanywhere-my_status").selectedIndex),
@@ -93,8 +92,7 @@ function malanywhereUIController(request) {
                 // If the user has values already it need to be updated
                 else if (request.code === 1) {
                     var info = {
-                        "message": "AUD",
-                        "type": "update",
+                        "message": "update",
                         "data": {
                             "episode": document.getElementById("malanywhere-my_watched_episodes").value,
                             "status": indexToMalStatus(document.getElementById("malanywhere-my_status").selectedIndex),
@@ -122,10 +120,8 @@ function malanywhereUIController(request) {
             function deleteListener() {
                 request.code = 0;
                 var info = {
-                    "message": "AUD",
-                    "type": "delete",
-                    "id": valuesOnMal.series_animedb_id,
-                    "data": -1
+                    "message": "delete",
+                    "data": valuesOnMal.series_animedb_id,
                 };
                 malanywhereRequest(info, request);
                 // The code is changed and the values are set to be default

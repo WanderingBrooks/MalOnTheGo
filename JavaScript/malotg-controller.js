@@ -17,7 +17,7 @@ function getInfo(data, textStatus, jqXHR) {
         "message": "information update",
         "code": 2,
         "text": jqXHR.responseText
-    }, request);
+    });
 }
 
 // Listener for the backend looks for requests from the front end then delegates the message to the backend
@@ -102,6 +102,63 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 });
         });
     }
+    else if (request.message === "add") {
+        getCredentials(sender.tab, function(credentials) {
+           malAdd(request.data, request.id, credentials.username, credentials.password, sender.tab,
+               function (jqXHR, textStatus, errorThrown) {
+                   malanywhereSendInfo({
+                       "message": "information update",
+                       "code": 2,
+                       "text": jqXHR.responseText + " " + textStatus
+                   }, sender.tab)
+               },
+               function (data, textStatus, jqXHR) {
+                   malanywhereSendInfo({
+                       "message": "information update",
+                       "code": 2,
+                       "text": jqXHR.responseText
+                   }, sender.tab);
+               });
+        });
+    }
+    else if (request.message === "update") {
+        getCredentials(sender.tab, function(credentials) {
+            malUpdate(request.data, request.id, credentials.username, credentials.password, sender.tab,
+                function (jqXHR, textStatus, errorThrown) {
+                    malanywhereSendInfo({
+                        "message": "information update",
+                        "code": 2,
+                        "text": jqXHR.responseText
+                    }, sender.tab)
+                },
+                function (data, textStatus, jqXHR) {
+                    malanywhereSendInfo({
+                        "message": "information update",
+                        "code": 2,
+                        "text": jqXHR.responseText
+                    }, sender.tab);
+                });
+        });
+    }
+    else if (request.message === "delete") {
+        getCredentials(sender.tab, function(credentials) {
+            malDelete(request.data, credentials.username, credentials.password, sender.tab,
+                function (jqXHR, textStatus, errorThrown) {
+                    malanywhereSendInfo({
+                        "message": "information update",
+                        "code": 2,
+                        "text": jqXHR.responseText
+                    }, sender.tab)
+                },
+                function (data, textStatus, jqXHR) {
+                    malanywhereSendInfo({
+                        "message": "information update",
+                        "code": 2,
+                        "text": jqXHR.responseText
+                    }, sender.tab);
+                });
+        });
+    }
 });
 /* get the users credentials
  Returns an object with a username and password field
@@ -174,14 +231,60 @@ function malanywhereSaveCredentials(user, password, tab) {
     return saveCredentials;
 }
 
-function malAdd(xmlValues, username, password) {
-
+function malAdd(data, id, username, password, tab, error, success) {
+    // Creates an xml representation of the object based on the mal api standard
+    var xml = objectToXML(data, "entry");
+    var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
+    $.ajax({
+        "url": " https://myanimelist.net/api/animelist/add/" + id + ".xml",
+        "type": "POST",
+        "data": {"data": xmlString},
+        "success": success,
+        "error": error,
+        "username": username,
+        "password": password
+    });
 }
 
-function malUpdate(xmlValues, username, password) {
-
+function malUpdate(data, id, username, password, tab, error, success) {
+    // Creates an xml representation of the object based on the mal api standard
+    var xml = objectToXML(data, "entry");
+    var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
+    $.ajax({
+        "url": " https://myanimelist.net/api/animelist/update/" + id + ".xml",
+        "type": "POST",
+        "data": {"data": xmlString},
+        "success": success,
+        "error": error,
+        "username": username,
+        "password": password
+    });
 }
 
-function malDelete(id, username, password) {
+function malDelete(id, username, password, tab, error, success) {
+    $.ajax({
+        "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
+        "type": "POST",
+        "success": success,
+        "error": error,
+        "username": username,
+        "password": password
+    });
+}
 
+/* Converts a object to an xml tree */
+/* Objects should only be mappings from strings to primitive types strings, booleans, numbers (NOT OBJECTS, OR ARRAYS, OR FUNCTION or ...) */
+function objectToXML(object, rootName) {
+    var xmlDoc = document.implementation.createDocument("", rootName, null);
+    var keys = Object.keys(object);
+    for (var i = 0; i < keys.length; i++) {
+
+        var key = keys[i];
+        var value = object[key];
+
+        var xmlNode = xmlDoc.createElement(key);
+        xmlDoc.documentElement.appendChild(xmlNode);
+        xmlNode.appendChild(xmlDoc.createTextNode(value));
+    }
+    return xmlDoc;
 }
