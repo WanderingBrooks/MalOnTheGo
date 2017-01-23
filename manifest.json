@@ -5,7 +5,7 @@
   "description": "Update your MyAnimeList from crunchyroll.com",
   "version": "0.9",
 
-  "browser_action": {
+  "page_action": {
     "default_icon": "images/icon.png",
 	"default_title": "Hide MalOTG"
   },

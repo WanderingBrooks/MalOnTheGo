@@ -1,12 +1,12 @@
 // Called when the user clicks on the browser action.
-chrome.browserAction.onClicked.addListener(function (tab) {
-    malanywhereSendInfo({"message": "show hide"});
-    chrome.browserAction.getTitle({}, function (title) {
+chrome.pageAction.onClicked.addListener(function (tab) {
+    malanywhereSendInfo({"message": "show hide"}, tab);
+    chrome.pageAction.getTitle({"tabId": tab.id}, function (title) {
         if (title === "Hide MalOTG") {
-            chrome.browserAction.setTitle({"title": "Show MalOTG"})
+            chrome.pageAction.setTitle({"title": "Show MalOTG"})
         }
         else if (title === "Show MalOTG") {
-            chrome.browserAction.setTitle({"title": "Hide MalOTG"})
+            chrome.pageAction.setTitle({"title": "Hide MalOTG"})
         }
     });
 });
@@ -20,8 +20,13 @@ function getInfo(data, textStatus, jqXHR) {
     });
 }
 
+function showActionPage(tab) {
+    chrome.pageAction.show(tab.id);
+}
+
 // Listener for the backend looks for requests from the front end then delegates the message to the backend
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    showActionPage(sender.tab);
     if (request.message === "save credentials") {
         malanywhereVerifyCredentials(request.username, request.password,
             function (jqXHR, textStatus, errorThrown) {
@@ -36,7 +41,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             });
     }
     else if (request.message === "delete credentials") {
-        malanywhereDeleteCredentials();
+        malanywhereDeleteCredentials(sender.tab);
     }
     else if (request.message === "get info") {
         getCredentials(sender.tab, function (credentials) {
@@ -196,7 +201,7 @@ function malanywhereDeleteCredentials(tab) {
             "message": "set values",
             "code": -2,
             "values": -2
-        }, tab)
+        }, tab);
     });
 }
 
@@ -214,7 +219,6 @@ function malanywhereSendInfo(data, tab) {
 
 /* Saves the given username and password */
 function malanywhereSaveCredentials(user, password, tab) {
-    function saveCredentials() {
         var data = {"username": user, "password": password};
         chrome.storage.local.set({"malotgData": data},
             function () {
@@ -234,9 +238,6 @@ function malanywhereSaveCredentials(user, password, tab) {
                 }
 
             });
-    }
-
-    return saveCredentials;
 }
 
 function malAdd(data, id, username, password, tab, error, success) {

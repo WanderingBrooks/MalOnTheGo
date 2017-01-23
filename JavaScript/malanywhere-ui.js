@@ -123,7 +123,7 @@ function malanywhereUIController(request) {
                 request.code = 0;
                 var info = {
                     "message": "delete",
-                    "data": valuesOnMal.series_animedb_id,
+                    "data": valuesOnMal.series_animedb_id
                 };
                 malanywhereRequest(info, request);
                 // The code is changed and the values are set to be default
@@ -215,7 +215,7 @@ function malanywhereUIController(request) {
                 var password = document.getElementById("malanywhere-password").value;
                 var info = {
                     "message": "save credentials",
-                    "user": username,
+                    "username": username,
                     "password": password
                 };
                 malanywhereRequest(info, request);
