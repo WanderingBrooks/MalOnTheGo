@@ -17,10 +17,7 @@ function malanywhereVerifyCredentials(username, password, error, success) {
 
 // Uses the given titles and the given username and password to return user values for the show
 function malanywhereGetInfo(titles, username, password, callback) {
-    malanywhereVerifyCredentials(username, password,
-        function () {
-            return -1
-        },
+    malanywhereVerifyCredentials(username, password, error,
         function () {
             // Initializes the values for how many ajaxes should return how many have returned and the data returned by them
             var expectedCount = titles.length;
@@ -34,6 +31,7 @@ function malanywhereGetInfo(titles, username, password, callback) {
                         "url": "https://myanimelist.net/api/anime/search.xml",
                         "data": {"q": titles[i]},
                         "success": determineShow,
+                        "error": error,
                         "dataType": "xml",
                         "async": false,
                         "username": username,
@@ -94,22 +92,27 @@ function malanywhereGetInfo(titles, username, password, callback) {
                                 "url": "http://myanimelist.net/malappinfo.php",
                                 "data": {"u": username, "status": "all", "type": "anime"},
                                 "success": findAnimeCreator($anime),
+                                "error": error,
                                 "dataType": "xml"
                             });
                         }
                         // If we did not
                         else {
-                            callback({ "code": -1 });
+                            callback(
+                                {
+                                    "code": -1,
+                                    "animeValues": -1,
+                                    "userValues": -1,
+                                    "jqXHR": -1,
+                                    "textStatus": -1,
+                                    "errorThrown": -1
+                                });
                         }
                         // Reset the variables in case the user refreshes the page
                         activeCount = 0;
                         results = [];
 
 
-                    }
-                    // If something goes wrong with initialization
-                    else {
-                        alert("Wrong number of titles or data error in determineShow");
                     }
 
                 }
@@ -140,14 +143,21 @@ function malanywhereGetInfo(titles, username, password, callback) {
                         callback ({
                             "code": 1,
                             "userValues": $userValues,
-                            "searchResults": $searchResults
+                            "searchResults": $searchResults,
+                            "jqXHR": -1,
+                            "textStatus": -1,
+                            "errorThrown": -1
                         });
                     }
                     // If it wasn't found in the users list send the information we have to be displayed allows updating
                     else {
                         callback({
                             "code": 0,
-                            "searchResults": $searchResults
+                            "searchResults": $searchResults,
+                            "userValues": -1,
+                            "jqXHR": -1,
+                            "textStatus": -1,
+                            "errorThrown": -1
                         });
                     }
                 }
@@ -155,5 +165,28 @@ function malanywhereGetInfo(titles, username, password, callback) {
                 return findAnime;
             }
     });
+
+    function error (jqXHR, textStatus, errorThrown) {
+        if (jqXHR.responseText === "Invalid credentials") {
+            callback({
+                "code": -2,
+                "userValues": -1,
+                "animeValues": -1,
+                "jqXHR": jqXHR,
+                "textStatus": textStatus,
+                "errorThrown": errorThrown
+            });
+        }
+        else {
+            callback({
+                "code": -3,
+                "userValues": -1,
+                "animeValues": -1,
+                "jqXHR": jqXHR,
+                "textStatus": textStatus,
+                "errorThrown": errorThrown
+            });
+        }
+    }
 
 }

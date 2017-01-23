@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 malanywhereSendInfo({
                     "message": "information update",
                     "code": 2,
-                    "text": jqXHR.responseText + " " + textStatus
+                    "text": jqXHR.responseText
                 }, sender.tab)
             },
             function (data, textStatus, jqXHR) {
