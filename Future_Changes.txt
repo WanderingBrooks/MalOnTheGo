@@ -4,26 +4,9 @@ Things to fix
     3. Write documentation for the api and chrome extension
     4. Add the advanced button mal uses it fill up space and looks good
     5. If an ajax fails send info to the front end to be displayed.
-    6. Move Advanced options to the set status instead of passing it to the back end Almost works
-       Problem is that when going to hte back end it seems variables are deleted or uninitialized
     7. Should there be a tag or different buttons to denote if the anime is actually on the users list
     8. Public release?
-    9. Only show the hide/show when on a valid site
-       that's not part of the api though
     10. Send a JSON or XML file from the backend because whoever uses the api very well may not be writing in Javascript
     11. Fix Permissions on Chrome Extension
-
-
-
-Things to note:
-    the request is passed to every function that the user has to define so if they need extra info passed
-    in the object thy can access it wherever they need it. An example where its useful si chrome.tabs.query to find the right tab
-    I need the URL so I pass that in the request object to be accessed later.
-
-Code Table
-    -2: Insert Login hide everything else
-    -1: Insert Error show not found
-     0: Anime found but user does not have it on their list
-     1: Anime is on Mal and the user has values already stored
 
 
