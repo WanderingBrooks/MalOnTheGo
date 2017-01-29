@@ -13,15 +13,14 @@
     "activeTab",
     "https://ajax.googleapis.com/",
 	"storage",
-    "http://*/*",
-    "https://*/*"
+    "*://myanimelist.net/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "*://www.crunchyroll.com/*"
       ],
-      "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malanywhere-ui.js", "JavaScript/malotg-page.js"],
+      "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malotg-page-updated.js"],
       "css": ["CSS/jquery-ui.min.css", "CSS/malanywhere-snipet.css"]
     }
   ],
