@@ -1,24 +1,7 @@
 // Called when the user clicks on the browser action.
 chrome.pageAction.onClicked.addListener(function (tab) {
     malanywhereSendInfo({"message": "show hide"}, tab);
-    chrome.pageAction.getTitle({"tabId": tab.id}, function (title) {
-        if (title === "Hide MalOTG") {
-            chrome.pageAction.setTitle({"title": "Show MalOTG"})
-        }
-        else if (title === "Show MalOTG") {
-            chrome.pageAction.setTitle({"title": "Hide MalOTG"})
-        }
-    });
 });
-
-// Gets the text from the xhr and sends it to be displayed at the front end
-function getInfo(data, textStatus, jqXHR) {
-    malanywhereSendInfo({
-        "message": "information update",
-        "code": 2,
-        "text": jqXHR.responseText
-    });
-}
 
 function showActionPage(tab) {
     chrome.pageAction.show(tab.id);
@@ -173,7 +156,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         });
     }
 });
-/* get the users credentials
+/*
+ get the users credentials
  Returns an object with a username and password field
  */
 function getCredentials(tab, callback) {

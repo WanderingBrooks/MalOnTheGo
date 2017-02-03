@@ -1,26 +1,26 @@
-#malanywhere {
+#malotg {
     font-family: Verdana, Arial;
     font-size: 13px;
 }
 
-.malanywhere-links {
+.malotg-links {
     text-decoration: none;
     color: #1d439b;
 }
-.malanywhere-links:hover{
+.malotg-links:hover{
     text-decoration: underline !important;
 }
 
-#malanywhere-login>div, #malanywhere-values>div  {
+#malotg-login>div, #malotg-values>div  {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-#malanywhere-in {
+#malotg-in {
     display: none;
 }
 
-#malanywhere-out, #malanywhere-in {
+#malotg-out, #malotg-in {
     margin-left: 30px;
 }
 
@@ -29,35 +29,35 @@
     font-size: 11px;
 }
 
-.malanywhere-label-input {
+.malotg-label-input {
     vertical-align: middle;
     display: flex;
     align-items: center;
 }
 
-.malanywhere-input {
+.malotg-input {
     margin-left: 20px;
 }
 
-#malanywhere-my_watched_episodes {
+#malotg-my_watched_episodes {
     width: 50px;
 }
 
-#malanywhere-info {
+#malotg-info {
     margin-left: 70px;
     font-size: 15px;
     font-weight: bold;
 }
 
-#malanywhere-values-buttons {
+#malotg-values-buttons {
     margin-left: 65px;
 }
 
-#malanywhere-hide-advanced, #malanywhere-hide-login, #malanywhere-login, #malanywhere-advanced {
+#malotg-hide-advanced, #malotg-hide-login, #malotg-login, #malotg-advanced {
     display: none;
 }
 
-.malanywhere-clear-button {
+.malotg-clear-button {
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -65,22 +65,22 @@
     text-align: center;
 }
 
-.malanywhere-show-hide {
+.malotg-show-hide {
     margin-left: 70px;
 }
 
-#malanywhere-show-login, #malanywhere-hide-login {
+#malotg-show-login, #malotg-hide-login {
     margin-left: 10px;
 }
 
-#malanywhere-more-options {
+#malotg-more-options {
     margin-left: 40px;
 }
 
-#malanywhere-my_tags {
+#malotg-my_tags {
     resize: none;
 }
-.malanywhere-normal-buttons {
+.malotg-normal-buttons {
     margin-right: 30px;
     border-style: solid;
     border-top-width: 1px;
@@ -100,13 +100,13 @@
     cursor: pointer;
 }
 
-.malanywhere-normal-buttons:disabled {
+.malotg-normal-buttons:disabled {
     cursor: default;
     background-color: #6c8cd8;
     color: #FFF;
 }
 
-.malanywhere-clear-button:disabled {
+.malotg-clear-button:disabled {
     cursor: default;
     color: #6c8cd8;
 

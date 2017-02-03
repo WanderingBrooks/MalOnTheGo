@@ -7,7 +7,7 @@
 
   "page_action": {
     "default_icon": "images/icon.png",
-	"default_title": "Hide MalOTG"
+	"default_title": "Malotg \n\nClick to hide or show \nwhen the icon is blue"
   },
   "permissions": [
     "activeTab",
@@ -20,8 +20,8 @@
       "matches": [
         "*://www.crunchyroll.com/*"
       ],
-      "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malotg-page-updated.js"],
-      "css": ["CSS/jquery-ui.min.css", "CSS/malanywhere-snipet.css"]
+      "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malotg-page.js"],
+      "css": ["CSS/jquery-ui.min.css", "CSS/malotg-snipet.css"]
     }
   ],
   "background": {
@@ -30,7 +30,7 @@
   },
 
   "web_accessible_resources": [
-    "HTML/malanywhere-snipet.html",
-    "CSS/malanywhere-snipet.css"
+    "HTML/malotg-snipet.html",
+    "CSS/malotg-snipet.css"
     ]
 }
