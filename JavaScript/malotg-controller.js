@@ -35,15 +35,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                             "message": "set values",
                             "code": 1,
                             "values": {
-                                "series_title": anime.searchResults.find("title").text(),
-                                "my_status": anime.userValues.find("my_status").text(),
-                                "my_score": anime.userValues.find("my_score").text(),
-                                "series_episodes": anime.userValues.find("series_episodes").text(),
-                                "my_watched_episodes": anime.userValues.find("my_watched_episodes").text(),
-                                "my_start_date": anime.userValues.find("my_start_date").text(),
-                                "my_finish_date": anime.userValues.find("my_finish_date").text(),
-                                "my_tags": anime.userValues.find("my_tags").text(),
-                                "series_animedb_id": anime.searchResults.find("id").text(),
+                                "series_title": anime.animeInfo.title,
+                                "my_status": anime.userValues.status,
+                                "my_score": anime.userValues.score,
+                                "series_episodes": anime.userValues.episode,
+                                "my_watched_episodes": anime.userValues.watched_episodes,
+                                "my_start_date": anime.userValues.start_date,
+                                "my_finish_date": anime.userValues.finish_date,
+                                "my_tags": anime.userValues.tags,
+                                "series_animedb_id": anime.animeInfo.id,
                                 "user": credentials.username,
                                 "password": credentials.password
                             }
@@ -54,15 +54,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                             "message": "set values",
                             "code": 0,
                             "values": {
-                                "series_title": anime.searchResults.find("title").text(),
+                                "series_title": anime.animeInfo.title,
                                 "my_status": "1",
                                 "my_score": "0",
-                                "series_episodes": anime.searchResults.find("episodes").text(),
+                                "series_episodes": anime.animeInfo.episodes,
                                 "my_watched_episodes": "0",
                                 "my_start_date": "",
                                 "my_finish_date": "",
                                 "my_tags": "",
-                                "series_animedb_id": anime.searchResults.find("id").text(),
+                                "series_animedb_id": anime.animeInfo.id,
                                 "user": credentials.username,
                                 "password": credentials.password
                             }
