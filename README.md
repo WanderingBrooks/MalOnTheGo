@@ -11,6 +11,9 @@ MalOTG is a Chrome Exstension that adds the ability to edit a users myanimelist 
 
 ##Current Issues:
   Errors from the Chrome apis or the Myanimelist apis are handeled but not optimally.
+  
+  
+## Images 
 
 What Crunchyroll looks like without the chrome exstension
 ![No Fields](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/images/without.PNG)
