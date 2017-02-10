@@ -33,10 +33,10 @@ function malotgUIController(request) {
 
         // Injects the html from fileLocation into the injectLocation
         function inject(fileLocation, injectLocation) {
+            code = request.code;
+            advancedOptions = false;
             // Has it already been injected
             if (!(document.getElementById("malotg"))) {
-                code = request.code;
-                advancedOptions = false;
                 // If not inject into page
                 var div = document.createElement("div");
                 div.id = "malotg";
@@ -265,16 +265,11 @@ function malotgUIController(request) {
                 document.getElementById("malotg-hide-login").style.display = "inline";
                 document.getElementById("malotg-in").style.display = "inline";
                 document.getElementById("malotg-out").style.display = "none";
+                document.getElementById("malotg-login-links").style.display = "inline";
+                document.getElementById("malotg-signup").style.display = "inline";
             }
             else if (code == -1) {
-                // Make the values field visible hide the login
-                // disabled everything  show wasn't found
-                document.getElementById("malotg-values").style.display = "inline";
-                document.getElementById("malotg-login").style.display = "none";
-                document.getElementById("malotg-show-login").style.display = "inline";
-                document.getElementById("malotg-hide-login").style.display = "none";
-                document.getElementById("malotg-in").style.display = "none";
-                document.getElementById("malotg-out").style.display = "inline";
+                hideLogin();
                 document.getElementById("malotg-series_title").textContent = request.title;
                 document.getElementById("malotg-series_title").href = "https://myanimelist.net/" + "404" + "/";
                 document.getElementById("malotg-my_status").disabled = true;
@@ -291,14 +286,7 @@ function malotgUIController(request) {
                 document.getElementById("malotg-password").value = valuesOnMal.password;
             }
             else if (code == 0) {
-                // Make the values field visible hide login
-                // set all the user changeable fields to default, and the set the fields that are not changeable
-                document.getElementById("malotg-values").style.display = "inline";
-                document.getElementById("malotg-login").style.display = "none";
-                document.getElementById("malotg-show-login").style.display = "inline";
-                document.getElementById("malotg-hide-login").style.display = "none";
-                document.getElementById("malotg-in").style.display = "none";
-                document.getElementById("malotg-out").style.display = "inline";
+                hideLogin();
                 document.getElementById("malotg-series_title").textContent = valuesOnMal.series_title;
                 document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/";
                 document.getElementById("malotg-my_status").selectedIndex = 0;
@@ -313,14 +301,7 @@ function malotgUIController(request) {
                 document.getElementById("malotg-password").value = valuesOnMal.password;
             }
             else if (code == 1) {
-                // Make the values fields visible
-                // set the vields to what the user has stored on mal
-                document.getElementById("malotg-values").style.display = "inline";
-                document.getElementById("malotg-login").style.display = "none";
-                document.getElementById("malotg-show-login").style.display = "inline";
-                document.getElementById("malotg-hide-login").style.display = "none";
-                document.getElementById("malotg-in").style.display = "none";
-                document.getElementById("malotg-out").style.display = "inline";
+                hideLogin();
                 document.getElementById("malotg-series_title").textContent = valuesOnMal.series_title;
                 document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/";
                 document.getElementById("malotg-my_status").selectedIndex = malToIndexStatus(valuesOnMal.my_status);
@@ -343,15 +324,17 @@ function malotgUIController(request) {
             setTimeout(function () {
                 document.getElementById('malotg-info').textContent = 'MalOnTheGo';
             }, 1000);
-            malotgUpdateValues();
-
+            // if advancedOptions then the info has been save to mal now open the edit page for this anime
             if (request.advancedOptions) {
                 openEditPage(request.id);
                 advancedOptions = false;
             }
-            if (code == 2) {
+            // Crednetials are now correct restart getting title process
+            if (request.code == 2) {
                 malotgSendTitles(request);
             }
+
+            malotgUpdateValues();
         }
     }
     // Initializes two variables
@@ -361,6 +344,7 @@ function malotgUIController(request) {
         // If the user pressed the advance options button this tells the submit listener to update before going to
         // the mal website
         var advancedOptions;
+        // Code keeps track of the current state thats being displayed and =how the info is stored on mal
         var code;
     }
     // Open the edit page for the given anime id
@@ -425,6 +409,20 @@ function malotgUIController(request) {
             document.getElementById("malotg-series_episodes").textContent = valuesOnMal.series_episodes;
 
         }
+    }
+
+    /*
+    Hides login and show the appropriate buttons to allow the user to show the login fields
+     */
+    function hideLogin() {
+        document.getElementById("malotg-values").style.display = "inline";
+        document.getElementById("malotg-login").style.display = "none";
+        document.getElementById("malotg-show-login").style.display = "inline";
+        document.getElementById("malotg-hide-login").style.display = "none";
+        document.getElementById("malotg-in").style.display = "none";
+        document.getElementById("malotg-out").style.display = "inline";
+        document.getElementById("malotg-login-links").style.display = "none";
+        document.getElementById("malotg-signup").style.display = "none";
     }
 }
 

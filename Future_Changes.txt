@@ -1,6 +1,7 @@
 Things to fix
     1. Code -3 and -1 are similar maybe combine and -1 is just a special case of -3
     2. More error checking, if getting credentials from chrome fails users should not be able to edit them
+    3. Forgot username forgot password and sign up should only show if the user isn't signed in
     2. Line 76 malotg-page what if the add fails same thing for delete farther down
     4. Add the advanced button mal uses it fill up space and looks good
     6. Public release?

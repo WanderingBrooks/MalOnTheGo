@@ -258,7 +258,7 @@ function malotgSaveCredentials(user, password, tab) {
                 else {
                     malotgSendInfo({
                         "message": "information update",
-                        // Tis is a bogus code because the front end will get new titles if credentials have been saved
+                        // This is a bogus code because the front end will get new titles if credentials have been saved
                         "code": 2,
                         "text": ' Saved Credentials'
                     }, tab);

@@ -7,6 +7,7 @@
     text-decoration: none;
     color: #1d439b;
 }
+
 .malotg-links:hover{
     text-decoration: underline !important;
 }
@@ -111,6 +112,12 @@
     color: #6c8cd8;
 
 }
+
+.link-bar {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .ui-widget-header .ui-icon {
     background-image: url("https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
 }
