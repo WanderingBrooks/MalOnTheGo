@@ -1,12 +1,9 @@
 Things to fix
-    1. Clean up css maybe done
-    2. Good comments / Make sure the design is intuitive and good / Rename variables and functions to make sense maybe add malanywhere before everything
-    3. Write documentation for the api and chrome extension
+    1. Code -3 and -1 are similar maybe combine and -1 is just a special case of -3
+    2. More error checking, if getting credentials from chrome fails users should not be able to edit them
+    2. Line 76 malotg-page what if the add fails same thing for delete farther down
     4. Add the advanced button mal uses it fill up space and looks good
-    5. If an ajax fails send info to the front end to be displayed.
-    7. Should there be a tag or different buttons to denote if the anime is actually on the users list
-    8. Public release?
-    10. Send a JSON or XML file from the backend because whoever uses the api very well may not be writing in Javascript
-    11. Fix Permissions on Chrome Extension
+    6. Public release?
+    7. Send a JSON or XML file from the backend because whoever uses the api very well may not be writing in Javascript
 
 
