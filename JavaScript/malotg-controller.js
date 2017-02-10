@@ -47,7 +47,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                                 "series_title": anime.animeInfo.title,
                                 "my_status": anime.userValues.status,
                                 "my_score": anime.userValues.score,
-                                "series_episodes": anime.userValues.episode,
+                                "series_episodes": anime.animeInfo.episodes,
                                 "my_watched_episodes": anime.userValues.watched_episodes,
                                 "my_start_date": anime.userValues.start_date,
                                 "my_finish_date": anime.userValues.finish_date,
