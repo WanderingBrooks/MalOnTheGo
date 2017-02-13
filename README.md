@@ -1,7 +1,7 @@
 For information on how to implement the malanywhere api see the JavaScript file [malotg-controller.js](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/JavaScript/malotg-controller.js). Theres a lot of code related to chrome that can be ignored the lines that call the api are 31 and 48. 
 
 ## Basic Understanding
-If you don't know what [MyAnimeList](https://myanimelist.net/) or Crunchyroll.com are read this!
+If you don't know what [MyAnimeList](https://myanimelist.net/) or [Crunchyroll.com](https://crunchyroll.com/) are read this!
   To understand what this chrome exstension does an understanding of MyAnimeList is neccesary. MyAnimeList.net is a website that allows individual users to keep track of what animes they are watching, completed, plan to watch and so on. It is also an online community where people can discuss, ask question like any interent forum. 
   
 Crunchyroll.com is an anime streaming website that I and other anime fans use, many currently airing shows and a few past shows are streamed on this site.
