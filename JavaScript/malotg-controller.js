@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                             "message": "set values",
                             "code": 1,
                             "values": {
-                                "series_title": anime.animeInfo.title,
+                                "series_title": anime.animeInfo.matched_title,
                                 "my_status": anime.userValues.status,
                                 "my_score": anime.userValues.score,
                                 "series_episodes": anime.animeInfo.episodes,
@@ -65,7 +65,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                             "message": "set values",
                             "code": 0,
                             "values": {
-                                "series_title": anime.animeInfo.title,
+                                "series_title": anime.animeInfo.matched_title,
                                 "my_status": "1",
                                 "my_score": "0",
                                 "series_episodes": anime.animeInfo.episodes,

@@ -96,12 +96,12 @@ function malotgUIController(request) {
                     // The code needs to be updated because now the user has info on MAL
                     info.message = "add";
                     code = 1;
-                    malotgRequest(info, request);
+                    malotgRequest(info);
                 }
                 // If the user has values already it need to be updated
                 else if (code === 1) {
                     info.message = "update";
-                    malotgRequest(info, request);
+                    malotgRequest(info);
                 }
 
             }
@@ -113,7 +113,7 @@ function malotgUIController(request) {
                     "data": valuesOnMal.series_animedb_id
                 };
                 code = 0;
-                malotgRequest(info, request);
+                malotgRequest(info);
                 // The code is changed,the html fields are cleared and the local copy of values are updated
                 setValues();
 
@@ -211,7 +211,7 @@ function malotgUIController(request) {
                     "username": username,
                     "password": password
                 };
-                malotgRequest(info, request);
+                malotgRequest(info);
             }
 
             // Clear credentials stored for the user
@@ -219,7 +219,7 @@ function malotgUIController(request) {
                 var info = {
                     "message": "delete credentials"
                 };
-                malotgRequest(info, request);
+                malotgRequest(info);
             }
 
             // Function that turns the password input from password to text and vise versa
