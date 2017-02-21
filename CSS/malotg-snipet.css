@@ -17,9 +17,6 @@
     margin-bottom: 10px;
 }
 
-#malotg-in {
-    display: none;
-}
 
 #malotg-out, #malotg-in {
     margin-left: 30px;
@@ -45,7 +42,6 @@
 }
 
 #malotg-info {
-    margin-left: 70px;
     font-size: 15px;
     font-weight: bold;
 }
@@ -54,7 +50,7 @@
     margin-left: 65px;
 }
 
-#malotg-hide-advanced, #malotg-hide-login, #malotg-login, #malotg-advanced {
+#malotg-hide-advanced, #malotg-hide-login, #malotg-login, #malotg-advanced, #malotg-in, #malotg-display {
     display: none;
 }
 

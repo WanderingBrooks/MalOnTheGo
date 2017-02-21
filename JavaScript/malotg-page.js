@@ -2,6 +2,10 @@
 chrome.runtime.onMessage.addListener(function(request) {
     malotgUIController(request)
 });
+
+// Local copy of the values for this anime stored on myanimelist
+var malotgValuesOnMal;
+
 // Function that interprets the request and delegates it to the right functions
 function malotgUIController(request) {
     if (request.message === ("show hide")) {
@@ -28,13 +32,16 @@ function malotgUIController(request) {
             }
             div.setAttribute("class", "showmedia-leftbox clearfix large-margin-bottom");
         };
-        valuesOnMal = request.values;
+        malotgValuesOnMal = request.values;
+        // Code keeps track of the current state thats being displayed and =how the info is stored on mal
+        var malotgCode = request.code;
+        // If the user pressed the advance options button this tells the submit listener to update before going to
+        // the mal website
+        var malotgAdvancedOptions = false;
         inject(fileLocation, injectLocation);
 
         // Injects the html from fileLocation into the injectLocation
         function inject(fileLocation, injectLocation) {
-            code = request.code;
-            advancedOptions = false;
             // Has it already been injected
             if (!(document.getElementById("malotg"))) {
                 // If not inject into page
@@ -88,21 +95,22 @@ function malotgUIController(request) {
                         "comments": "",
                         "tags": ""
                     },
-                    "id": valuesOnMal.series_animedb_id,
-                    "advancedOptions": advancedOptions
+                    "id": malotgValuesOnMal.series_animedb_id,
+                    "advancedOptions": malotgAdvancedOptions
                 };
                 // If it isn't on mal already it needs to be added
-                if (code === 0) {
+                if (malotgCode === 0) {
                     // The code needs to be updated because now the user has info on MAL
                     info.message = "add";
-                    code = 1;
+                    malotgCode = 1;
                     malotgRequest(info);
                 }
                 // If the user has values already it need to be updated
-                else if (code === 1) {
+                else if (malotgCode === 1) {
                     info.message = "update";
                     malotgRequest(info);
                 }
+                malotgAdvancedOptions = false;
 
             }
 
@@ -110,9 +118,9 @@ function malotgUIController(request) {
             function deleteListener() {
                 var info = {
                     "message": "delete",
-                    "data": valuesOnMal.series_animedb_id
+                    "data": malotgValuesOnMal.series_animedb_id
                 };
-                code = 0;
+                malotgCode = 0;
                 malotgRequest(info);
                 // The code is changed,the html fields are cleared and the local copy of values are updated
                 setValues();
@@ -143,40 +151,23 @@ function malotgUIController(request) {
 
             // Are the values currently on mal different then the ones in the fields here
             function valueChange() {
-                return document.getElementById("malotg-my_status").selectedIndex != malToIndexStatus(valuesOnMal.my_status) ||
-                    document.getElementById("malotg-my_watched_episodes").value != valuesOnMal.my_watched_episodes ||
-                    document.getElementById("malotg-my_score").selectedIndex != scoreIndex(valuesOnMal.my_score) ||
-                    document.getElementById("malotg-my_start_date").value != formatDate(valuesOnMal.my_start_date) ||
-                    document.getElementById("malotg-my_finish_date").value != formatDate(valuesOnMal.my_finish_date) ||
-                    document.getElementById("malotg-my_tags").value != valuesOnMal.my_tags;
-            }
-
-            // Update the local copy of what is stored of mal
-            function malotgUpdateValues() {
-                valuesOnMal = {
-                    "series_title": valuesOnMal.series_title,
-                    "my_status": indexToMalStatus(document.getElementById("malotg-my_status").selectedIndex),
-                    "my_score": scoreIndex(document.getElementById("malotg-my_score").selectedIndex),
-                    "series_episodes": valuesOnMal.series_episodes,
-                    "my_watched_episodes": document.getElementById("malotg-my_watched_episodes").value,
-                    "my_start_date": document.getElementById("malotg-my_start_date").value.split("/").join(""),
-                    "my_finish_date": document.getElementById("malotg-my_finish_date").value.split("/").join(""),
-                    "my_tags": document.getElementById("malotg-my_tags").value,
-                    "series_animedb_id": valuesOnMal.series_animedb_id,
-                    "user": valuesOnMal.user,
-                    "password": valuesOnMal.password
-                }
+                return document.getElementById("malotg-my_status").selectedIndex != malToIndexStatus(malotgValuesOnMal.my_status) ||
+                    document.getElementById("malotg-my_watched_episodes").value != malotgValuesOnMal.my_watched_episodes ||
+                    document.getElementById("malotg-my_score").selectedIndex != scoreIndex(malotgValuesOnMal.my_score) ||
+                    document.getElementById("malotg-my_start_date").value != formatDate(malotgValuesOnMal.my_start_date) ||
+                    document.getElementById("malotg-my_finish_date").value != formatDate(malotgValuesOnMal.my_finish_date) ||
+                    document.getElementById("malotg-my_tags").value != malotgValuesOnMal.my_tags;
             }
 
             // This function opens options not supported on the mal api on the mal website
             function moreOptionsListener() {
                 // If the user has changed the values before going to mal those should be updated
                 if (valueChange()) {
-                    advancedOptions = true;
+                    malotgAdvancedOptions = true;
                     submitListener();
                 }
                 else {
-                    openEditPage(valuesOnMal.series_animedb_id);
+                    openEditPage(malotgValuesOnMal.series_animedb_id);
                 }
             }
 
@@ -257,8 +248,7 @@ function malotgUIController(request) {
          1: Anime is on Mal and the user has values already stored
          */
         function setValues() {
-            // Hide everything except the login field
-            if (code == -2) {
+            if (malotgCode == -2) {
                 document.getElementById("malotg-values").style.display = "none";
                 document.getElementById("malotg-login").style.display = "inline";
                 document.getElementById("malotg-show-login").style.display = "none";
@@ -267,8 +257,10 @@ function malotgUIController(request) {
                 document.getElementById("malotg-out").style.display = "none";
                 document.getElementById("malotg-login-links").style.display = "inline";
                 document.getElementById("malotg-signup").style.display = "inline";
+                document.getElementById("malotg-display-username").style.display = "none";
+                document.getElementById("malotg-display").style.display = "inline";
             }
-            else if (code == -1) {
+            else if (malotgCode == -1) {
                 hideLogin();
                 document.getElementById("malotg-series_title").textContent = request.title;
                 document.getElementById("malotg-series_title").href = "https://myanimelist.net/" + "404" + "/";
@@ -282,13 +274,11 @@ function malotgUIController(request) {
                 document.getElementById("malotg-more-options").disabled = true;
                 document.getElementById("malotg-submit").disabled = true;
                 document.getElementById("malotg-delete").disabled = true;
-                document.getElementById("malotg-username").value = valuesOnMal.user;
-                document.getElementById("malotg-password").value = valuesOnMal.password;
             }
-            else if (code == 0) {
+            else if (malotgCode == 0) {
                 hideLogin();
-                document.getElementById("malotg-series_title").textContent = valuesOnMal.series_title;
-                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/";
+                document.getElementById("malotg-series_title").textContent = malotgValuesOnMal.series_title;
+                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + malotgValuesOnMal.series_animedb_id + "/";
                 document.getElementById("malotg-my_status").selectedIndex = 0;
                 document.getElementById("malotg-my_watched_episodes").value = 0;
                 unknownEpisodes();
@@ -296,57 +286,63 @@ function malotgUIController(request) {
                 document.getElementById("malotg-my_start_date").value = "";
                 document.getElementById("malotg-my_finish_date").value = "";
                 document.getElementById("malotg-my_tags").value = "";
-                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + valuesOnMal.series_animedb_id + "/edit";
-                document.getElementById("malotg-username").value = valuesOnMal.user;
-                document.getElementById("malotg-password").value = valuesOnMal.password;
+                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + malotgValuesOnMal.series_animedb_id + "/edit";
             }
-            else if (code == 1) {
+            else if (malotgCode == 1) {
                 hideLogin();
-                document.getElementById("malotg-series_title").textContent = valuesOnMal.series_title;
-                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + valuesOnMal.series_animedb_id + "/";
-                document.getElementById("malotg-my_status").selectedIndex = malToIndexStatus(valuesOnMal.my_status);
-                document.getElementById("malotg-my_watched_episodes").value = valuesOnMal.my_watched_episodes;
+                document.getElementById("malotg-series_title").textContent = malotgValuesOnMal.series_title;
+                document.getElementById("malotg-series_title").href = "https://myanimelist.net/anime/" + malotgValuesOnMal.series_animedb_id + "/";
+                document.getElementById("malotg-my_status").selectedIndex = malToIndexStatus(malotgValuesOnMal.my_status);
+                document.getElementById("malotg-my_watched_episodes").value = malotgValuesOnMal.my_watched_episodes;
                 unknownEpisodes();
-                document.getElementById("malotg-my_score").selectedIndex = scoreIndex(valuesOnMal.my_score);
-                document.getElementById("malotg-my_start_date").value = formatDate(valuesOnMal.my_start_date);
-                document.getElementById("malotg-my_finish_date").value = formatDate(valuesOnMal.my_finish_date);
-                document.getElementById("malotg-my_tags").value = valuesOnMal.my_tags;
-                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + valuesOnMal.series_animedb_id + "/edit";
-                document.getElementById("malotg-username").value = valuesOnMal.user;
-                document.getElementById("malotg-password").value = valuesOnMal.password;
+                document.getElementById("malotg-my_score").selectedIndex = scoreIndex(malotgValuesOnMal.my_score);
+                document.getElementById("malotg-my_start_date").value = formatDate(malotgValuesOnMal.my_start_date);
+                document.getElementById("malotg-my_finish_date").value = formatDate(malotgValuesOnMal.my_finish_date);
+                document.getElementById("malotg-my_tags").value = malotgValuesOnMal.my_tags;
+                document.getElementById("malotg-more-options").href = "https://myanimelist.net/ownlist/anime/" + malotgValuesOnMal.series_animedb_id + "/edit";
             }
         }
     }
     // Update malotg-info and check advanced options
     else if (request.message === "information update") {
         if (document.getElementById("malotg")) {
-            document.getElementById("malotg-info").textContent = request.text;
+            document.getElementById("malotg-display-username").style.display = 'none';
+            document.getElementById("malotg-display").textContent = request.text;
+            document.getElementById("malotg-display").style.display = "inline";;
             setTimeout(function () {
-                document.getElementById('malotg-info').textContent = 'MalOnTheGo';
+                document.getElementById('malotg-display').style.display = 'none';
+                document.getElementById('malotg-display').textContent = 'MalOnTheGo';
+                document.getElementById("malotg-display-username").style.display = "inline";
             }, 1000);
             // if advancedOptions then the info has been save to mal now open the edit page for this anime
             if (request.advancedOptions) {
                 openEditPage(request.id);
-                advancedOptions = false;
+                request.advancedOptions = false;
             }
-            // Crednetials are now correct restart getting title process
+            // Credentials are now correct restart getting title process
             if (request.code == 2) {
                 malotgSendTitles(request);
             }
-
             malotgUpdateValues();
         }
+        // Update the local copy of what is stored of mal
+        function malotgUpdateValues() {
+            malotgValuesOnMal = {
+                "series_title": malotgValuesOnMal.series_title,
+                "my_status": indexToMalStatus(document.getElementById("malotg-my_status").selectedIndex),
+                "my_score": scoreIndex(document.getElementById("malotg-my_score").selectedIndex),
+                "series_episodes": malotgValuesOnMal.series_episodes,
+                "my_watched_episodes": document.getElementById("malotg-my_watched_episodes").value,
+                "my_start_date": document.getElementById("malotg-my_start_date").value.split("/").join(""),
+                "my_finish_date": document.getElementById("malotg-my_finish_date").value.split("/").join(""),
+                "my_tags": document.getElementById("malotg-my_tags").value,
+                "series_animedb_id": malotgValuesOnMal.series_animedb_id,
+                "user": malotgValuesOnMal.user,
+                "password": malotgValuesOnMal.password
+            }
+        }
     }
-    // Initializes two variables
-    else if (request.message === "initialize") {
-        // Local copy of the values for this anime stored on myanimelist
-        var valuesOnMal;
-        // If the user pressed the advance options button this tells the submit listener to update before going to
-        // the mal website
-        var advancedOptions;
-        // Code keeps track of the current state thats being displayed and =how the info is stored on mal
-        var code;
-    }
+
     // Open the edit page for the given anime id
     function openEditPage(id) {
         window.open("https://myanimelist.net/ownlist/anime/" + id + "/edit", '_blank');
@@ -401,12 +397,12 @@ function malotgUIController(request) {
     /*If there are an unknown number of episodes because the show is airing MAL stores
      * a 0 as the total number of episodes this checks if that is the case*/
     function unknownEpisodes() {
-        if (valuesOnMal.series_episodes == 0 || valuesOnMal.series_episodes === "") {
+        if (malotgValuesOnMal.series_episodes == 0 || malotgValuesOnMal.series_episodes === "") {
             document.getElementById("malotg-series_episodes").textContent = "?"
         }
         else {
-            document.getElementById("malotg-my_watched_episodes").max = valuesOnMal.series_episodes;
-            document.getElementById("malotg-series_episodes").textContent = valuesOnMal.series_episodes;
+            document.getElementById("malotg-my_watched_episodes").max = malotgValuesOnMal.series_episodes;
+            document.getElementById("malotg-series_episodes").textContent = malotgValuesOnMal.series_episodes;
 
         }
     }
@@ -415,6 +411,10 @@ function malotgUIController(request) {
     Hides login and show the appropriate buttons to allow the user to show the login fields
      */
     function hideLogin() {
+        document.getElementById("malotg-display-username").textContent = malotgValuesOnMal.user;
+        document.getElementById("malotg-display-username").href = "https://myanimelist.net/animelist/" + malotgValuesOnMal.user;
+        document.getElementById("malotg-username").value = malotgValuesOnMal.user;
+        document.getElementById("malotg-password").value = malotgValuesOnMal.password;
         document.getElementById("malotg-values").style.display = "inline";
         document.getElementById("malotg-login").style.display = "none";
         document.getElementById("malotg-show-login").style.display = "inline";
@@ -435,7 +435,6 @@ function malotgSendTitles(request) {
     if (URL.indexOf("crunchyroll.com") != -1) {
         // Has to be on the episode page other wise we don't do anything
         if (document.getElementById("showmedia_video")) {
-            malotgUIController({"message": "initialize"});
             var titles = [];
             var aboveVideo = $("#template_body > div.new_layout.new_layout_wide > div.showmedia-trail.cf > div > h1 > a > span").text();
             var belowVideo = $("#showmedia_about_episode_num > a").text();
