@@ -1,12 +1,17 @@
 // Listener for the backend sending a request
-chrome.runtime.onMessage.addListener(function(request) {
+chrome.runtime.onMessage.addListener(function (request) {
     malotgUIController(request)
 });
 
 // Local copy of the values for this anime stored on myanimelist
 var malotgValuesOnMal;
 
-// Function that interprets the request and delegates it to the right functions
+/* Function that interprets the request and delegates it to the right functions
+ Valid inputs
+ "show hide" show the extension if its hidden otherwise hide it
+ "set values" Injects the extension and sets the fields to the values given by the backend
+ "information update" Display to the user the given text
+ */
 function malotgUIController(request) {
     if (request.message === ("show hide")) {
         // does the Element actually exist
@@ -21,17 +26,34 @@ function malotgUIController(request) {
         }
     }
     else if (request.message === "set values") {
-        var fileLocation = chrome.extension.getURL('/HTML/malotg-snipet.html');
-        var injectLocation = function (div) {
-            var sidebar = document.getElementById("sidebar");
-            if (document.getElementById("showmedia_free_trial_signup")) {
-                sidebar.insertBefore(div, sidebar.childNodes[2]);
+        var fileLocation;
+        var injectLocation;
+        var sidebar;
+        if (document.URL.indexOf("crunchyroll.com") != -1) {
+            fileLocation = chrome.extension.getURL('/HTML/malotg-snipet.html');
+            injectLocation = function (div) {
+                sidebar = document.getElementById("sidebar");
+                if (document.getElementById("showmedia_free_trial_signup")) {
+                    sidebar.insertBefore(div, sidebar.childNodes[2]);
+                }
+                else {
+                    sidebar.insertBefore(div, sidebar.childNodes[0]);
+                }
+                div.setAttribute("class", "showmedia-leftbox clearfix large-margin-bottom");
+            };
+        }
+        else if (document.URL.indexOf("kissanime.ru") != -1) {
+            fileLocation = chrome.extension.getURL('/HTML/malotg-snipet.html');
+            injectLocation = function (div) {
+                sidebar = document.getElementById("centerDivVideo").parentNode;
+                for (var i = 0; i < sidebar.childNodes.length; i++) {
+                    if (sidebar.childNodes[i].id === "adsIfrme7") {
+                        sidebar.insertBefore(div, sidebar.childNodes[i]);
+                    }
+                }
+
             }
-            else {
-                sidebar.insertBefore(div, sidebar.childNodes[0]);
-            }
-            div.setAttribute("class", "showmedia-leftbox clearfix large-margin-bottom");
-        };
+        }
         malotgValuesOnMal = request.values;
         // Code keeps track of the current state thats being displayed and =how the info is stored on mal
         var malotgCode = request.code;
@@ -306,22 +328,24 @@ function malotgUIController(request) {
     // Update malotg-info and check advanced options
     else if (request.message === "information update") {
         if (document.getElementById("malotg")) {
-            document.getElementById("malotg-display-username").style.display = 'none';
-            document.getElementById("malotg-display").textContent = request.text;
-            document.getElementById("malotg-display").style.display = "inline";;
-            setTimeout(function () {
-                document.getElementById('malotg-display').style.display = 'none';
-                document.getElementById('malotg-display').textContent = 'MalOnTheGo';
-                document.getElementById("malotg-display-username").style.display = "inline";
-            }, 1000);
+            // Credentials are now correct restart getting title process
+            if (request.code != 2) {
+                document.getElementById("malotg-display-username").style.display = 'none';
+                document.getElementById("malotg-display").textContent = request.text;
+                document.getElementById("malotg-display").style.display = "inline";
+                setTimeout(function () {
+                    document.getElementById('malotg-display').style.display = 'none';
+                    document.getElementById('malotg-display').textContent = 'MalOnTheGo';
+                    document.getElementById("malotg-display-username").style.display = "inline";
+                }, 1000);
+            }
+            else {
+                malotgSendTitles(request);
+            }
             // if advancedOptions then the info has been save to mal now open the edit page for this anime
             if (request.advancedOptions) {
                 openEditPage(request.id);
                 request.advancedOptions = false;
-            }
-            // Credentials are now correct restart getting title process
-            if (request.code == 2) {
-                malotgSendTitles(request);
             }
             malotgUpdateValues();
         }
@@ -408,11 +432,13 @@ function malotgUIController(request) {
     }
 
     /*
-    Hides login and show the appropriate buttons to allow the user to show the login fields
+     Hides login and show the appropriate buttons to allow the user to show the login fields
      */
     function hideLogin() {
         document.getElementById("malotg-display-username").textContent = malotgValuesOnMal.user;
         document.getElementById("malotg-display-username").href = "https://myanimelist.net/animelist/" + malotgValuesOnMal.user;
+        document.getElementById("malotg-display-username").style.display = "inline";
+        document.getElementById("malotg-display").style.display = "none";
         document.getElementById("malotg-username").value = malotgValuesOnMal.user;
         document.getElementById("malotg-password").value = malotgValuesOnMal.password;
         document.getElementById("malotg-values").style.display = "inline";
@@ -431,15 +457,15 @@ $(document).ready(malotgSendTitles);
 // Grabs the titles from the page and makes any necessary changes to those titles so they will show up on the Mal search
 function malotgSendTitles(request) {
     var URL = document.URL;
+    var titles = [];
     // Were on Crunchyroll
     if (URL.indexOf("crunchyroll.com") != -1) {
         // Has to be on the episode page other wise we don't do anything
         if (document.getElementById("showmedia_video")) {
-            var titles = [];
             var aboveVideo = $("#template_body > div.new_layout.new_layout_wide > div.showmedia-trail.cf > div > h1 > a > span").text();
             var belowVideo = $("#showmedia_about_episode_num > a").text();
             var movie = $("#showmedia_about_episode_num").text();
-            URL = parseCR(URL);
+            URL = parseURLCR(URL);
             // If the user isn't logged in the paths above do not work
             if (document.getElementById("showmedia_free_trial_signup")) {
                 aboveVideo = $("#template_body > div:nth-child(6) > div.showmedia-trail.cf > div > h1 > a > span").text();
@@ -467,13 +493,65 @@ function malotgSendTitles(request) {
             });
         }
     }
+    else if (URL.indexOf("kissanime.ru") != -1) {
+        if (document.getElementById("selectEpisode")) {
+            titles[0] = parseURLKA(URL);
+            titles[1] = parseTitleKA(document.getElementById("navsubbar").firstElementChild.firstElementChild.textContent);
+            chrome.runtime.sendMessage({
+                "message": "get info",
+                "titles": titles
+            });
+        }
+    }
 }
 
 // Parses the given crunchyroll url for the title of the show
-function parseCR(URL) {
+function parseURLCR(URL) {
     var CR = "http://www.crunchyroll.com/";
     var titleURL = "";
     var index = CR.length;
+    for (var i = index; i < URL.length; i++) {
+        var c = URL.charAt(i);
+        if (c == '/') {
+            break;
+        }
+        else if (c == '-') {
+            titleURL += ' ';
+        }
+        else {
+            titleURL += c;
+        }
+    }
+    return titleURL;
+}
+
+function parseTitleKA(Title) {
+    Title = Title.replace(/\s+/g, " ");
+    var begin = "Anime";
+    var titleSub = "(Sub)";
+    var titleDub = "(Dub)";
+    var end = 0;
+    var showTitle = "";
+    if (Title.indexOf(titleSub) != -1) {
+        end = Title.indexOf(titleSub) - 1;
+    }
+    else {
+        end = Title.indexOf(titleDub) - 1;
+    }
+    var index = Title.indexOf(begin) + begin.length + 1;
+    var c = '';
+    for (var i = index; i < end; i++) {
+        c = Title.charAt(i);
+        if (c != '')
+            showTitle += c;
+    }
+    return showTitle;
+}
+
+function parseURLKA(URL) {
+    var KA = "http://kissanime.ru/Anime/";
+    var titleURL = "";
+    var index = KA.length;
     for (var i = index; i < URL.length; i++) {
         var c = URL.charAt(i);
         if (c == '/') {

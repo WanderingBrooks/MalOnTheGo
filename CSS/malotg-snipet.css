@@ -17,9 +17,9 @@
     margin-bottom: 10px;
 }
 
-
 #malotg-out, #malotg-in {
     margin-left: 30px;
+    margin-right: 30px;
 }
 
 .value-label {
@@ -29,11 +29,10 @@
 
 .malotg-label-input {
     vertical-align: middle;
-    display: flex;
-    align-items: center;
 }
 
 .malotg-input {
+    display: inline-block;
     margin-left: 20px;
 }
 
@@ -42,12 +41,13 @@
 }
 
 #malotg-info {
+    text-align: center;
     font-size: 15px;
     font-weight: bold;
 }
 
 #malotg-values-buttons {
-    margin-left: 65px;
+    text-align: center
 }
 
 #malotg-hide-advanced, #malotg-hide-login, #malotg-login, #malotg-advanced, #malotg-in, #malotg-display {
@@ -59,26 +59,17 @@
     background-color: transparent;
     cursor: pointer;
     color: #1d439b;
+}
+
+.malotg-center-button {
     text-align: center;
-}
-
-.malotg-show-hide {
-    margin-left: 70px;
-}
-
-#malotg-show-login, #malotg-hide-login {
-    margin-left: 10px;
-}
-
-#malotg-more-options {
-    margin-left: 40px;
 }
 
 #malotg-my_tags {
     resize: none;
 }
+
 .malotg-normal-buttons {
-    margin-right: 30px;
     border-style: solid;
     border-top-width: 1px;
     border-left-width: 1px;
@@ -106,12 +97,15 @@
 .malotg-clear-button:disabled {
     cursor: default;
     color: #6c8cd8;
-
 }
 
 .link-bar {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+#malotg-my_tags {
+    vertical-align: middle;
 }
 
 .ui-widget-header .ui-icon {

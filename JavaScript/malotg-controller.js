@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     showActionPage(sender.tab);
     if (request.message === "save credentials") {
         // Verify the credentials before saving them
-        malanywhereVerifyCredentials(request.username, request.password,
+        MALAnywhere.verifyCredentials(request.username, request.password,
             function (jqXHR, textStatus, errorThrown) {
                 // If there not send the message from the server to the front end
                 malotgSendInfo({
@@ -35,14 +35,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         // Retrieve the users credentials from chrome.local.storage
         getCredentials(sender.tab, function (credentials) {
             // Get user values from the api
-            malanywhereGetInfo(request.titles, credentials.username, credentials.password,
+            MALAnywhere.getAnimeInfo(request.titles, credentials.username, credentials.password,
                 function (anime) {
                     // The show was found on MAL and the user has values stored for it already
                     // Send to the front end to be displayed
-                    if (anime.code === 1) {
+                    if (anime.code === MALAnywhere.CODES.FOUND_AND_ON_USER_LIST) {
                         malotgSendInfo({
                             "message": "set values",
-                            "code": 1,
+                            "code": MALAnywhere.CODES.FOUND_AND_ON_USER_LIST,
                             "values": {
                                 "series_title": anime.animeInfo.matched_title,
                                 "my_status": anime.userValues.status,
@@ -60,10 +60,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     }
                     // The show is on MAL but the user does not have nay info sored for it
                     // Send to the front end for displaying
-                    else if (anime.code === 0) {
+                    else if (anime.code === MALAnywhere.CODES.FOUND_BUT_NOT_ON_USER_LIST) {
                         malotgSendInfo({
                             "message": "set values",
-                            "code": 0,
+                            "code": MALAnywhere.CODES.FOUND_BUT_NOT_ON_USER_LIST,
                             "values": {
                                 "series_title": anime.animeInfo.matched_title,
                                 "my_status": "1",
@@ -81,10 +81,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                     }
                     // The given titles didn't match any show on MAL
                     // Display the info in the front end
-                    else if (anime.code === -1) {
+                    else if (anime.code === MALAnywhere.CODES.NO_SEARCH_RESULTS) {
                         malotgSendInfo({
                             "message": "set values",
-                            "code": -1,
+                            "code": MALAnywhere.CODES.NO_SEARCH_RESULTS,
                             "values": {
                                 "series_title": "",
                                 "my_status": "",
@@ -101,10 +101,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                             "title": "Anime not found"
                         }, sender.tab);
                     }
-                    else if (anime.code === -3) {
+                    else if (anime.code === MALAnywhere.CODES.AJAX_ERROR) {
                         malotgSendInfo({
                             "message": "set values",
-                            "code": -1,
+                            "code": -MALAnywhere.CODES.NO_SEARCH_RESULTS,
                             "values": {
                                 "series_title": "",
                                 "my_status": "",

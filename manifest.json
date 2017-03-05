@@ -3,7 +3,7 @@
 
   "name": "MalOnTheGo Alpha",
   "description": "Update your MyAnimeList from crunchyroll.com",
-  "version": "0.999",
+  "version": "0.999.2",
 
   "page_action": {
     "default_icon": "images/icon.png",
@@ -18,7 +18,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://www.crunchyroll.com/*"
+        "*://www.crunchyroll.com/*",
+        "*://kissanime.ru/*"
       ],
       "js": ["JavaScript/jquery-3.1.1.min.js", "JavaScript/jquery-ui.min.js", "JavaScript/malotg-page.js"],
       "css": ["CSS/jquery-ui.min.css", "CSS/malotg-snipet.css"]
