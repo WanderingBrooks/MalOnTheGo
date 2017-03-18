@@ -530,13 +530,17 @@ function parseTitleKA(Title) {
     var begin = "Anime";
     var titleSub = "(Sub)";
     var titleDub = "(Dub)";
+    var titleInformation = "information";
     var end = 0;
     var showTitle = "";
     if (Title.indexOf(titleSub) != -1) {
         end = Title.indexOf(titleSub) - 1;
     }
-    else {
+    else if (Title.indexOf(titleDub) != -1) {
         end = Title.indexOf(titleDub) - 1;
+    }
+    else {
+        end = Title.indexOf(titleInformation) - 1;
     }
     var index = Title.indexOf(begin) + begin.length + 1;
     var c = '';

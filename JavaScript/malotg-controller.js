@@ -129,7 +129,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         // Get credentials from chrome.local.storage
         getCredentials(sender.tab, function(credentials) {
             // Add the given show to the users mal list
-           malAdd(request.data, request.id, credentials.username, credentials.password, sender.tab,
+           malAdd(request.data, request.id, credentials.username, credentials.password,
                // inform the user that something went wrong when trying to add the info to mal
                function (jqXHR, textStatus, errorThrown) {
                    malotgSendInfo({
@@ -156,7 +156,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         // get credentials from chrome.local.storage
         getCredentials(sender.tab, function(credentials) {
             // Update the values already stored on mal with the ones sent by the front end
-            malUpdate(request.data, request.id, credentials.username, credentials.password, sender.tab,
+            malUpdate(request.data, request.id, credentials.username, credentials.password,
                 // inform the user something went wrong trying to update the values
                 function (jqXHR, textStatus, errorThrown) {
                     malotgSendInfo({
@@ -183,7 +183,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         // Get the credential from chrome.local.storage
         getCredentials(sender.tab, function(credentials) {
             // Delete the given values from the suers mal
-            malDelete(request.data, credentials.username, credentials.password, sender.tab,
+            malDelete(request.data, credentials.username, credentials.password,
                 // something went wrong trying to delete
                 function (jqXHR, textStatus, errorThrown) {
                     malotgSendInfo({
@@ -268,8 +268,7 @@ function malotgSaveCredentials(user, password, tab) {
 }
 
 // Adds the given info to the given users myanimelist and calls the error or success depending on the server response
-function malAdd(data, id, username, password, tab, error, success) {
-    // Creates an xml representation of the object based on the mal api standard
+function malAdd(data, id, username, password, error, success) {
     var xml = objectToXML(data, "entry");
     var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
     $.ajax({
@@ -283,8 +282,7 @@ function malAdd(data, id, username, password, tab, error, success) {
     });
 }
 // Updates the given users myanimelist with the given info ands calls the error or success depending on the server response
-function malUpdate(data, id, username, password, tab, error, success) {
-    // Creates an xml representation of the object based on the mal api standard
+function malUpdate(data, id, username, password, error, success) {
     var xml = objectToXML(data, "entry");
     var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
     $.ajax({
@@ -299,7 +297,7 @@ function malUpdate(data, id, username, password, tab, error, success) {
 }
 
 // Deletes the given show from the given users myanimelist
-function malDelete(id, username, password, tab, error, success) {
+function malDelete(id, username, password, error, success) {
     $.ajax({
         "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
         "type": "POST",
