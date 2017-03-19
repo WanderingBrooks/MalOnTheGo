@@ -100,22 +100,22 @@ function malotgUIController(request) {
 
             // Sends the info stored in malotg's fields to the backend to be sent to mal
             function submitListener() {
+                var episodes = document.getElementById("malotg-my_watched_episodes").value
+                if (episodes.indexOf(".") == -1 ||
+                    episodes.indexOf("+") == -1 ||
+                    episodes.indexOf("-") == -1 ||
+                    episodes.indexOf("e") == -1) {
+
+                    episodes = malotgValuesOnMal.my_watched_episodes
+                }
                 var info = {
                     "data": {
-                        "episode": document.getElementById("malotg-my_watched_episodes").value,
+                        "episode": episodes,
                         "status": indexToMalStatus(document.getElementById("malotg-my_status").selectedIndex),
                         "score": scoreIndex(document.getElementById("malotg-my_score").selectedIndex),
-                        "storage_type": "",
-                        "storage_value": "",
-                        "times_rewatched": "",
-                        "rewatch_value": "",
                         "date_start": document.getElementById("malotg-my_start_date").value.split("/").join(""),
                         "date_finish": document.getElementById("malotg-my_finish_date").value.split("/").join(""),
-                        "priority": "",
-                        "enable_discussion": "",
-                        "enable_rewatching": "",
-                        "comments": "",
-                        "tags": ""
+                        "tags": document.getElementById("malotg-my_tags").value
                     },
                     "id": malotgValuesOnMal.series_animedb_id,
                     "advancedOptions": malotgAdvancedOptions

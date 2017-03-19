@@ -1,10 +1,15 @@
 {
   "manifest_version": 2,
 
-  "name": "MalOnTheGo Alpha",
-  "description": "Update your MyAnimeList from crunchyroll.com",
-  "version": "1.0",
+  "name": "MalOnTheGo",
+  "description": "Update your MyAnimeList from crunchyroll and kissanime",
+  "version": "1.12",
 
+  "icons": {
+    "16": "images/MalOTG16.png",
+    "48": "images/MalOTG48.png",
+    "128": "images/MalOTG128.png"
+  },
   "page_action": {
     "default_icon": "images/MalOTGSmall.png",
 	"default_title": "Malotg \n\nClick to hide or show \nwhen the icon is blue"
