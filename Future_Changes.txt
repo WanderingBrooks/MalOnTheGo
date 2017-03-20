@@ -1,6 +1,12 @@
 Things to fix
-    2. More error checking, if getting credentials from chrome fails users should not be able to edit them
+    1. More error checking, if getting credentials from chrome fails users should not be able to edit them
     2. Line 76 malotg-page what if the add fails same thing for delete farther down
-    4. Add the advanced button mal uses it fill up space and looks good
+    3. Add the advanced button mal uses it fill up space and looks good
+    
+    
+ Bug! Values when saved on input e, -, +, and . break updateting. Three fixes needed. 
+ 1. On grabbing the values from the field.
+ 2. On updating local copy of mal information
+ 3. if the number of episodes is unknown there still needs to be a min on the episodes of 0
 
 
