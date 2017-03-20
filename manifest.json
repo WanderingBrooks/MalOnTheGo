@@ -3,7 +3,7 @@
 
   "name": "MalOnTheGo",
   "description": "Update your MyAnimeList from crunchyroll and kissanime",
-  "version": "1.12",
+  "version": "1.14",
 
   "icons": {
     "16": "images/MalOTG16.png",

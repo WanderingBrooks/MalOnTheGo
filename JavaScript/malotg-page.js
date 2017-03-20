@@ -100,13 +100,11 @@ function malotgUIController(request) {
 
             // Sends the info stored in malotg's fields to the backend to be sent to mal
             function submitListener() {
-                var episodes = document.getElementById("malotg-my_watched_episodes").value
-                if (episodes.indexOf(".") == -1 ||
-                    episodes.indexOf("+") == -1 ||
-                    episodes.indexOf("-") == -1 ||
-                    episodes.indexOf("e") == -1) {
-
-                    episodes = malotgValuesOnMal.my_watched_episodes
+                var episodes = document.getElementById("malotg-my_watched_episodes").value;
+                if ((episodes == "" && malotgValuesOnMal.my_watched_episodes != 0)
+                    || episodes.indexOf("-") != -1 || episodes.indexOf(".") != -1
+                    || episodes.indexOf("e") != -1 || episodes > malotgValuesOnMal.series_episodes) {
+                    episodes = malotgValuesOnMal.my_watched_episodes;
                 }
                 var info = {
                     "data": {
@@ -351,12 +349,18 @@ function malotgUIController(request) {
         }
         // Update the local copy of what is stored of mal
         function malotgUpdateValues() {
+            var episodes = document.getElementById("malotg-my_watched_episodes").value;
+            if ((episodes == "" && malotgValuesOnMal.my_watched_episodes != 0)
+                || episodes.indexOf("-") != -1 || episodes.indexOf(".") != -1
+                || episodes.indexOf("e") != -1 || episodes > malotgValuesOnMal.series_episodes) {
+                episodes = malotgValuesOnMal.my_watched_episodes;
+            }
             malotgValuesOnMal = {
                 "series_title": malotgValuesOnMal.series_title,
                 "my_status": indexToMalStatus(document.getElementById("malotg-my_status").selectedIndex),
                 "my_score": scoreIndex(document.getElementById("malotg-my_score").selectedIndex),
                 "series_episodes": malotgValuesOnMal.series_episodes,
-                "my_watched_episodes": document.getElementById("malotg-my_watched_episodes").value,
+                "my_watched_episodes": episodes,
                 "my_start_date": document.getElementById("malotg-my_start_date").value.split("/").join(""),
                 "my_finish_date": document.getElementById("malotg-my_finish_date").value.split("/").join(""),
                 "my_tags": document.getElementById("malotg-my_tags").value,
@@ -427,8 +431,8 @@ function malotgUIController(request) {
         else {
             document.getElementById("malotg-my_watched_episodes").max = malotgValuesOnMal.series_episodes;
             document.getElementById("malotg-series_episodes").textContent = malotgValuesOnMal.series_episodes;
-
         }
+        document.getElementById("malotg-my_watched_episodes").min = 0;
     }
 
     /*
