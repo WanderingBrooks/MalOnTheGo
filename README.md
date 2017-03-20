@@ -1,6 +1,6 @@
 For information on how to implement the malanywhere api see the JavaScript file [malotg-controller.js](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/JavaScript/malotg-controller.js). Theres a lot of code related to chrome that can be ignored the lines that call the api are 31 and 48. 
 
-Thanks Aaron Levine(https://github.com/alevine26) for helping test and finding bugs!
+Thanks (alevine26)(https://github.com/alevine26) for helping test and finding bugs!
 
 ## Basic Understanding
 If you don't know what [MyAnimeList](https://myanimelist.net/) or [Crunchyroll.com](https://crunchyroll.com/) are read this!
