@@ -1,4 +1,6 @@
-For information on how to implement the malanywhere api see the JavaScript file [malotg-controller.js](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/JavaScript/malotg-controller.js). Theres a lot of code related to chrome that can be ignored the lines that call the api are 31 and 48. 
+For information on how to implement the malanywhere api see the JavaScript file [malotg-controller.js](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/JavaScript/malotg-controller.js). Theres a lot of code related to chrome that can be ignored the lines that call the api are 31 and 48.
+
+**This can be added to chrome [here!](https://chrome.google.com/webstore/detail/malonthego/pgfecfcomkboinfddemijongdccpacmj)**
 
 Thanks [alevine26](https://github.com/alevine26) for helping test and finding bugs!
 
