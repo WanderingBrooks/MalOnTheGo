@@ -2,7 +2,9 @@ For information on how to implement the malanywhere api see the JavaScript file 
 
 **This can be added to chrome [here!](https://chrome.google.com/webstore/detail/malonthego/pgfecfcomkboinfddemijongdccpacmj)**
 
-Thanks [alevine26](https://github.com/alevine26) for helping test and finding bugs!
+Thanks [alevine26](https://github.com/alevine26) for helping test and finding bugs,</br>
+and [kj800x](https://github.com/kj800x) for helping me get started learning web dev and the code review!
+
 
 ## Basic Understanding
 If you don't know what [MyAnimeList](https://myanimelist.net/) or [Crunchyroll.com](https://crunchyroll.com/) are read this!
