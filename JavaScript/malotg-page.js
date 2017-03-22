@@ -103,7 +103,7 @@ function malotgUIController(request) {
                 var episodes = document.getElementById("malotg-my_watched_episodes").value;
                 if ((episodes == "" && malotgValuesOnMal.my_watched_episodes != 0)
                     || episodes.indexOf("-") != -1 || episodes.indexOf(".") != -1
-                    || episodes.indexOf("e") != -1 || episodes > malotgValuesOnMal.series_episodes) {
+                    || episodes.indexOf("e") != -1 || parseInt(episodes, 10)> parseInt(malotgValuesOnMal.series_episodes, 10)) {
                     episodes = malotgValuesOnMal.my_watched_episodes;
                 }
                 var info = {
@@ -352,7 +352,7 @@ function malotgUIController(request) {
             var episodes = document.getElementById("malotg-my_watched_episodes").value;
             if ((episodes == "" && malotgValuesOnMal.my_watched_episodes != 0)
                 || episodes.indexOf("-") != -1 || episodes.indexOf(".") != -1
-                || episodes.indexOf("e") != -1 || episodes > malotgValuesOnMal.series_episodes) {
+                || episodes.indexOf("e") != -1 || parseInt(episodes, 10)> parseInt(malotgValuesOnMal.series_episodes, 10)) {
                 episodes = malotgValuesOnMal.my_watched_episodes;
             }
             malotgValuesOnMal = {
