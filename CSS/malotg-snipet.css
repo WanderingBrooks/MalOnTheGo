@@ -46,23 +46,12 @@
     font-weight: bold;
 }
 
-#malotg-values-buttons {
+.malotg-center-button {
     text-align: center
 }
 
-#malotg-hide-advanced, #malotg-hide-login, #malotg-login, #malotg-advanced, #malotg-in, #malotg-display {
+#malotg-hide-advanced-button, #malotg-hide-login-button, #malotg-advanced, #malotg-login, #malotg-in, #malotg-display {
     display: none;
-}
-
-.malotg-clear-button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    color: #1d439b;
-}
-
-.malotg-center-button {
-    text-align: center;
 }
 
 #malotg-my_tags {
@@ -116,5 +105,30 @@
     display: inline-flex;
     width: 200px;
     text-overflow: ellipsis
+}
+
+.malotg-separator {
+    position: absolute;
+    width: 100%;
+    height: 15px;
+    border-bottom: 1px #BEBEBE solid;
+}
+
+.malotg-clear-button {
+    user-select: none;
+    border: none;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    color: #1d439b;
+    line-height: 30px;
+}
+
+.malotg-toggle-button {
+    position: absolute;
+    height: 30px;
+    width: 150px;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 

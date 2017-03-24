@@ -39,7 +39,7 @@ function malotgUIController(request) {
                 else {
                     sidebar.insertBefore(div, sidebar.childNodes[0]);
                 }
-                div.setAttribute("class", "showmedia-leftbox clearfix large-margin-bottom");
+                setBackGroundButtons("#f2f2f2");
             };
         }
         else if (document.URL.indexOf("kissanime.ru") != -1) {
@@ -51,7 +51,7 @@ function malotgUIController(request) {
                         sidebar.insertBefore(div, sidebar.childNodes[i]);
                     }
                 }
-
+                setBackGroundButtons("#161616");
             }
         }
         malotgValuesOnMal = request.values;
@@ -152,8 +152,8 @@ function malotgUIController(request) {
                 if (document.getElementById("malotg-advanced")) {
                     if (document.getElementById("malotg-advanced").style.displey = "none") {
                         document.getElementById("malotg-advanced").style.display = "inline";
-                        document.getElementById("malotg-hide-advanced").style.display = "inline";
-                        document.getElementById("malotg-show-advanced").style.display = "none";
+                        document.getElementById("malotg-hide-advanced-button").style.display = "inline";
+                        document.getElementById("malotg-show-advanced-button").style.display = "none";
                     }
                 }
             }
@@ -163,8 +163,8 @@ function malotgUIController(request) {
                 if (document.getElementById("malotg-advanced")) {
                     if (document.getElementById("malotg-advanced").style.displey = "inline") {
                         document.getElementById("malotg-advanced").style.display = "none";
-                        document.getElementById("malotg-hide-advanced").style.display = "none";
-                        document.getElementById("malotg-show-advanced").style.display = "inline";
+                        document.getElementById("malotg-hide-advanced-button").style.display = "none";
+                        document.getElementById("malotg-show-advanced-button").style.display = "inline";
                     }
                 }
             }
@@ -196,8 +196,8 @@ function malotgUIController(request) {
                 if (document.getElementById("malotg-login")) {
                     if (document.getElementById("malotg-login").style.displey = "none") {
                         document.getElementById("malotg-login").style.display = "inline";
-                        document.getElementById("malotg-hide-login").style.display = "inline";
-                        document.getElementById("malotg-show-login").style.display = "none";
+                        document.getElementById("malotg-hide-login-button").style.display = "inline";
+                        document.getElementById("malotg-show-login-button").style.display = "none";
                     }
                 }
             }
@@ -207,8 +207,8 @@ function malotgUIController(request) {
                 if (document.getElementById("malotg-login")) {
                     if (document.getElementById("malotg-login").style.displey = "inline") {
                         document.getElementById("malotg-login").style.display = "none";
-                        document.getElementById("malotg-hide-login").style.display = "none";
-                        document.getElementById("malotg-show-login").style.display = "inline";
+                        document.getElementById("malotg-hide-login-button").style.display = "none";
+                        document.getElementById("malotg-show-login-button").style.display = "inline";
                     }
                 }
             }
@@ -247,11 +247,11 @@ function malotgUIController(request) {
             // Sets up the listeners for all the button and their respective functions
             $("#malotg-submit").on("click", submitListener);
             $("#malotg-delete").on("click", deleteListener);
-            $("#malotg-show-advanced").on("click", showAdvancedListener);
-            $("#malotg-hide-advanced").on("click", hideAdvancedListener);
+            $("#malotg-show-advanced-button").on("click", showAdvancedListener);
+            $("#malotg-hide-advanced-button").on("click", hideAdvancedListener);
             $("#malotg-more-options").on("click", moreOptionsListener);
-            $("#malotg-hide-login").on("click", hideLoginListener);
-            $("#malotg-show-login").on("click", showLoginListener);
+            $("#malotg-hide-login-button").on("click", hideLoginListener);
+            $("#malotg-show-login-button").on("click", showLoginListener);
             $("#malotg-in").on("click", saveCredentialsListener);
             $("#malotg-out").on("click", deleteCredentialsListener);
             $("#malotg-showhide-password").on("click", togglePassword);
@@ -271,8 +271,8 @@ function malotgUIController(request) {
             if (malotgCode == -2) {
                 document.getElementById("malotg-values").style.display = "none";
                 document.getElementById("malotg-login").style.display = "inline";
-                document.getElementById("malotg-show-login").style.display = "none";
-                document.getElementById("malotg-hide-login").style.display = "inline";
+                document.getElementById("malotg-show-login-button").style.display = "none";
+                document.getElementById("malotg-hide-login-button").style.display = "inline";
                 document.getElementById("malotg-in").style.display = "inline";
                 document.getElementById("malotg-out").style.display = "none";
                 document.getElementById("malotg-login-links").style.display = "inline";
@@ -447,8 +447,8 @@ function malotgUIController(request) {
         document.getElementById("malotg-password").value = malotgValuesOnMal.password;
         document.getElementById("malotg-values").style.display = "inline";
         document.getElementById("malotg-login").style.display = "none";
-        document.getElementById("malotg-show-login").style.display = "inline";
-        document.getElementById("malotg-hide-login").style.display = "none";
+        document.getElementById("malotg-show-login-button").style.display = "inline";
+        document.getElementById("malotg-hide-login-button").style.display = "none";
         document.getElementById("malotg-in").style.display = "none";
         document.getElementById("malotg-out").style.display = "inline";
         document.getElementById("malotg-login-links").style.display = "none";
@@ -529,6 +529,7 @@ function parseURLCR(URL) {
     return titleURL;
 }
 
+// Parses a title feature on Kissanime to get the animes title
 function parseTitleKA(Title) {
     Title = Title.replace(/\s+/g, " ");
     var begin = "Anime";
@@ -556,6 +557,7 @@ function parseTitleKA(Title) {
     return showTitle;
 }
 
+// Parses the Kissanime url to get the animes title
 function parseURLKA(URL) {
     var KA = "http://kissanime.ru/Anime/";
     var titleURL = "";
@@ -574,6 +576,16 @@ function parseURLKA(URL) {
     }
     return titleURL;
 }
+
+// Sets the background color of the malotg-clear-button class to the given color
+// color must be of form similar to #FFFFFF
+function setBackGroundButtons(color) {
+    var buttons = document.getElementsByClassName("malotg-clear-button");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].setAttribute("style", "background-color: " + color);
+    }
+}
+
 
 // Sends a request to the backend containing the given info.
 function malotgRequest(info) {
