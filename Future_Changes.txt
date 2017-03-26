@@ -3,7 +3,7 @@ Backend:
     2. Line 76 malotg-page what if the add fails same thing for delete farther down
 
 UI:
-    1. Add the advanced button mal uses it fill up space and looks good
+    1. Try out React
 
 Frontend:
     1. Force episodes and tags to be the correct type

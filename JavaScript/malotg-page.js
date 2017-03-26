@@ -144,7 +144,6 @@ function malotgUIController(request) {
                 malotgRequest(info);
                 // The code is changed,the html fields are cleared and the local copy of values are updated
                 setValues();
-
             }
 
             // Hide the Advanced options section of the malotg-snipet.html
