@@ -123,6 +123,10 @@
     line-height: 30px;
 }
 
+#malotg-advanced-button, #malotg-login-button {
+    cursor: pointer;
+}
+
 .malotg-toggle-button {
     position: absolute;
     height: 30px;

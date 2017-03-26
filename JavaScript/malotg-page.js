@@ -148,20 +148,14 @@ function malotgUIController(request) {
             }
 
             // Hide the Advanced options section of the malotg-snipet.html
-            function showAdvancedListener() {
+            function advancedListener() {
                 if (document.getElementById("malotg-advanced")) {
-                    if (document.getElementById("malotg-advanced").style.displey = "none") {
+                    if ($("#malotg-advanced").css("display") == "none") {
                         document.getElementById("malotg-advanced").style.display = "inline";
                         document.getElementById("malotg-hide-advanced-button").style.display = "inline";
                         document.getElementById("malotg-show-advanced-button").style.display = "none";
                     }
-                }
-            }
-
-            // Show the Advanced options section of the malotg-snipet.html
-            function hideAdvancedListener() {
-                if (document.getElementById("malotg-advanced")) {
-                    if (document.getElementById("malotg-advanced").style.displey = "inline") {
+                    else {
                         document.getElementById("malotg-advanced").style.display = "none";
                         document.getElementById("malotg-hide-advanced-button").style.display = "none";
                         document.getElementById("malotg-show-advanced-button").style.display = "inline";
@@ -192,20 +186,14 @@ function malotgUIController(request) {
             }
 
             // Shows the login field of the malotg-snipet.html file
-            function showLoginListener() {
+            function loginListener() {
                 if (document.getElementById("malotg-login")) {
-                    if (document.getElementById("malotg-login").style.displey = "none") {
+                    if ($("#malotg-login").css("display") == "none") {
                         document.getElementById("malotg-login").style.display = "inline";
                         document.getElementById("malotg-hide-login-button").style.display = "inline";
                         document.getElementById("malotg-show-login-button").style.display = "none";
                     }
-                }
-            }
-
-            // Hides the login field of the malannywhere-snipet.html file
-            function hideLoginListener() {
-                if (document.getElementById("malotg-login")) {
-                    if (document.getElementById("malotg-login").style.displey = "inline") {
+                    else {
                         document.getElementById("malotg-login").style.display = "none";
                         document.getElementById("malotg-hide-login-button").style.display = "none";
                         document.getElementById("malotg-show-login-button").style.display = "inline";
@@ -247,11 +235,9 @@ function malotgUIController(request) {
             // Sets up the listeners for all the button and their respective functions
             $("#malotg-submit").on("click", submitListener);
             $("#malotg-delete").on("click", deleteListener);
-            $("#malotg-show-advanced-button").on("click", showAdvancedListener);
-            $("#malotg-hide-advanced-button").on("click", hideAdvancedListener);
+            $("#malotg-advanced-button").on("click", advancedListener);
             $("#malotg-more-options").on("click", moreOptionsListener);
-            $("#malotg-hide-login-button").on("click", hideLoginListener);
-            $("#malotg-show-login-button").on("click", showLoginListener);
+            $("#malotg-login-button").on("click", loginListener);
             $("#malotg-in").on("click", saveCredentialsListener);
             $("#malotg-out").on("click", deleteCredentialsListener);
             $("#malotg-showhide-password").on("click", togglePassword);
