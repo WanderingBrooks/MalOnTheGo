@@ -13,15 +13,22 @@ If you don't know what [MyAnimeList](https://myanimelist.net/) or [Crunchyroll.c
 Crunchyroll.com is an anime streaming website that I and other anime fans use, many currently airing shows and a few past shows are streamed on this site.
 
 ## MalOTG
-MalOTG is a Chrome Exstension that adds the ability to edit a users myanimelist values for the current show they are watching on crunchyroll.com. This is done using JavaScript, HTML, CSS, jQuery, the Myanimelist api and Chromes apis. This allows the user to edit their score or most values on myanimelist directly form the website they are watching the show on.  
+MalOTG is a Chrome Exstension that adds the ability to edit a users myanimelist values for the current show they are watching on crunchyroll.com. This is done using JavaScript, HTML, CSS, jQuery, the Myanimelist api and Chromes apis. The chrome exstension is currently in a private beta but has an expected public release of March 2017. This allows the user to edit their score or most values on myanimelist directly form the website they are watching the show on 
+
+##Current Issues:
+  Errors from the Chrome apis or the Myanimelist apis are handeled but not optimally.
+  
   
 ## Images 
 
+What Crunchyroll looks like without the chrome exstension
+![No Fields](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/images/without.PNG)
+
 Crunchyroll with the exstension enabled
-![Some Fields](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/images/DefaultUi.PNG)
+![Some Fields](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/images/with.PNG)
 
 All of the fields opened
-![All Fields](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/images/ExpandedUi.PNG)
+![All Fields](https://github.com/WanderingBrooks/MalOnTheGo/blob/master/images/withAllFields.PNG)
 
 
 

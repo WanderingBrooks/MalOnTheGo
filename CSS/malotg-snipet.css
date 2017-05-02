@@ -121,6 +121,7 @@
     cursor: pointer;
     color: #1d439b;
     line-height: 30px;
+    margin: 3px;
 }
 
 #malotg-advanced-button, #malotg-login-button {

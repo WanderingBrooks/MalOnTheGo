@@ -1,5 +1,12 @@
+// Sends the given data to the specified chrome tab
+function malotgSendInfo(data, tab) {
+    chrome.tabs.get(tab.id, function () {
+        chrome.tabs.sendMessage(tab.id, data);
+    });
+}
+
 // Called when the user clicks on the browser action.
-// Sends a request to the front end to either hide or show malotg
+// Sends a request to the front end to either hide or show the ui
 chrome.pageAction.onClicked.addListener(function (tab) {
     malotgSendInfo({"message": "show hide"}, tab);
 });
@@ -7,6 +14,118 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 // Enables the chrome page action
 function showActionPage(tab) {
     chrome.pageAction.show(tab.id);
+}
+
+/*
+ get the users credentials from chrome storage
+ Returns an object with a field username and field password
+ */
+function getCredentials(tab, callback) {
+    chrome.storage.local.get('malotgData', function (result) {
+        if (!chrome.runtime.error) {
+            if ($.isEmptyObject(result)) {
+                malotgSendInfo({
+                    "message": "set values",
+                    "code": -2,
+                    "values": -2
+                }, tab);
+            }
+            callback({"username": result.malotgData.username, "password": result.malotgData.password});
+        }
+        //  Code -3 send chrome get failed NOT YET IMPLEMENTED
+    });
+}
+
+// Deletes the users credentials from chrome storage
+// Alerts the frontend that new credentials need to be acquired
+function malotgDeleteCredentials(tab) {
+    chrome.storage.local.clear(function () {
+        malotgSendInfo({
+            "message": "set values",
+            "code": -2,
+            "values": -2
+        }, tab);
+    });
+}
+
+/* Saves the given username and password to chrome.storage.local
+ * Does not verify the credentials must be done prior to calling this function */
+function malotgSaveCredentials(user, password, tab) {
+    var data = {"username": user, "password": password};
+    chrome.storage.local.set({"malotgData": data},
+        function () {
+            if (chrome.runtime.error) {
+                malotgSendInfo({
+                    "message": "information update",
+                    "code": -2,
+                    "text": 'Failed to save credentials'
+                }, tab);
+            }
+            else {
+                malotgSendInfo({
+                    "message": "information update",
+                    // This is a bogus code because the front end will get new titles if credentials have been saved
+                    "code": 2,
+                    "text": ' Saved Credentials'
+                }, tab);
+            }
+        });
+}
+
+/* Converts a object to an xml tree */
+/* Objects should only be mappings from strings to primitive types strings, booleans, numbers (NOT OBJECTS, OR ARRAYS, OR FUNCTION OR ...) */
+function objectToXML(object, rootName) {
+    var xmlDoc = document.implementation.createDocument("", rootName, null);
+    var keys = Object.keys(object);
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var value = object[key];
+        var xmlNode = xmlDoc.createElement(key);
+        xmlDoc.documentElement.appendChild(xmlNode);
+        xmlNode.appendChild(xmlDoc.createTextNode(value));
+    }
+    return xmlDoc;
+}
+
+// Adds the given info to the given users myanimelist and calls the error or success depending on MyAnimeList's response
+function malAdd(data, id, username, password, error, success) {
+    var xml = objectToXML(data, "entry");
+    var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
+    $.ajax({
+        "url": " https://myanimelist.net/api/animelist/add/" + id + ".xml",
+        "type": "POST",
+        "data": {"data": xmlString},
+        "success": success,
+        "error": error,
+        "username": username,
+        "password": password
+    });
+}
+// Updates the given users myanimelist with the given info ands calls the error or success depending on MyAnimeList's response
+function malUpdate(data, id, username, password, error, success) {
+    var xml = objectToXML(data, "entry");
+    var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
+    $.ajax({
+        "url": " https://myanimelist.net/api/animelist/update/" + id + ".xml",
+        "type": "POST",
+        "data": {"data": xmlString},
+        "success": success,
+        "error": error,
+        "username": username,
+        "password": password
+    });
+}
+
+// Deletes the given show from the given users MyAnimeList and calls success or error depending on the servers response
+function malDelete(id, username, password, error, success) {
+    $.ajax({
+        "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
+        "type": "POST",
+        "success": success,
+        "error": error,
+        "username": username,
+        "password": password
+    });
 }
 
 // Listener for the backend looks for requests from the front end then delegates the request
@@ -203,124 +322,4 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         });
     }
 });
-/*
- get the users credentials
- Returns an object with a username and password field
- */
-function getCredentials(tab, callback) {
-    chrome.storage.local.get('malotgData', function (result) {
-        if (!chrome.runtime.error) {
-            if ($.isEmptyObject(result)) {
-                malotgSendInfo({
-                    "message": "set values",
-                    "code": -2,
-                    "values": -2
-                }, tab);
-            }
-            callback({"username": result.malotgData.username, "password": result.malotgData.password});
-        }
-        //  Code -3 send chrome get failed NOT YET IMPLEMENTED
-    });
-}
 
-// Deletes the users credentials
-function malotgDeleteCredentials(tab) {
-    chrome.storage.local.clear(function () {
-        // Reformat ui for login now that no credentials are stored
-        malotgSendInfo({
-            "message": "set values",
-            "code": -2,
-            "values": -2
-        }, tab);
-    });
-}
-
-
-// Sends the given data to the tab or tabs that are on the same page
-function malotgSendInfo(data, tab) {
-    chrome.tabs.get(tab.id, function () {
-        chrome.tabs.sendMessage(tab.id, data);
-    });
-}
-
-/* Saves the given username and password to chrome.storage.local */
-function malotgSaveCredentials(user, password, tab) {
-        var data = {"username": user, "password": password};
-        chrome.storage.local.set({"malotgData": data},
-            function () {
-                if (chrome.runtime.error) {
-                    malotgSendInfo({
-                        "message": "information update",
-                        "code": -2,
-                        "text": 'Failed to save credentials'
-                    }, tab);
-                }
-                else {
-                    malotgSendInfo({
-                        "message": "information update",
-                        // This is a bogus code because the front end will get new titles if credentials have been saved
-                        "code": 2,
-                        "text": ' Saved Credentials'
-                    }, tab);
-                }
-
-            });
-}
-
-// Adds the given info to the given users myanimelist and calls the error or success depending on the server response
-function malAdd(data, id, username, password, error, success) {
-    var xml = objectToXML(data, "entry");
-    var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
-    $.ajax({
-        "url": " https://myanimelist.net/api/animelist/add/" + id + ".xml",
-        "type": "POST",
-        "data": {"data": xmlString},
-        "success": success,
-        "error": error,
-        "username": username,
-        "password": password
-    });
-}
-// Updates the given users myanimelist with the given info ands calls the error or success depending on the server response
-function malUpdate(data, id, username, password, error, success) {
-    var xml = objectToXML(data, "entry");
-    var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
-    $.ajax({
-        "url": " https://myanimelist.net/api/animelist/update/" + id + ".xml",
-        "type": "POST",
-        "data": {"data": xmlString},
-        "success": success,
-        "error": error,
-        "username": username,
-        "password": password
-    });
-}
-
-// Deletes the given show from the given users myanimelist
-function malDelete(id, username, password, error, success) {
-    $.ajax({
-        "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
-        "type": "POST",
-        "success": success,
-        "error": error,
-        "username": username,
-        "password": password
-    });
-}
-
-/* Converts a object to an xml tree */
-/* Objects should only be mappings from strings to primitive types strings, booleans, numbers (NOT OBJECTS, OR ARRAYS, OR FUNCTION or ...) */
-function objectToXML(object, rootName) {
-    var xmlDoc = document.implementation.createDocument("", rootName, null);
-    var keys = Object.keys(object);
-    for (var i = 0; i < keys.length; i++) {
-
-        var key = keys[i];
-        var value = object[key];
-
-        var xmlNode = xmlDoc.createElement(key);
-        xmlDoc.documentElement.appendChild(xmlNode);
-        xmlNode.appendChild(xmlDoc.createTextNode(value));
-    }
-    return xmlDoc;
-}

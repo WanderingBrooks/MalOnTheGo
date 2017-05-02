@@ -51,7 +51,7 @@ function malotgUIController(request) {
                         sidebar.insertBefore(div, sidebar.childNodes[i]);
                     }
                 }
-                setBackGroundButtons("#161616");
+                setBackGroundButtons("#111111");
             }
         }
         malotgValuesOnMal = request.values;
@@ -231,6 +231,16 @@ function malotgUIController(request) {
                 }
             }
 
+            // disable mousewheel on a input number field when in focus
+            // (to prevent Cromium browsers change the value when scrolling)
+            $('malotg-my_watched_episodes').on('focus', 'input[type=number]', function (e) {
+                $(this).on('mousewheel.disableScroll', function (e) {
+                    e.preventDefault()
+                })
+            });
+            $('malotg-my_watched_episodes').on('blur', 'input[type=number]', function (e) {
+                $(this).off('mousewheel.disableScroll')
+            });
             // Sets up the listeners for all the button and their respective functions
             $("#malotg-submit").on("click", submitListener);
             $("#malotg-delete").on("click", deleteListener);
