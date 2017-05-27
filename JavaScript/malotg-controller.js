@@ -5,6 +5,12 @@ function malotgSendInfo(data, tab) {
     });
 }
 
+var translator = {
+            "KONOSUBA -God's blessing on this wonderful world!": "Kono Subarashii Sekai ni Shukufuku wo!",
+            "KONOSUBA -God's blessing on this wonderful world! 2": "Kono Subarashii Sekai ni Shukufuku wo! 2",
+            "My Hero Academia Season 2": "Boku no Hero Academia 2nd Season"
+        }; 
+
 // Called when the user clicks on the browser action.
 // Sends a request to the front end to either hide or show the ui
 chrome.pageAction.onClicked.addListener(function (tab) {
@@ -151,6 +157,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         malotgDeleteCredentials(sender.tab);
     }
     else if (request.message === "get info") {
+        for (var i = 0; i < request.titles.length; i++) {
+            if (translator.hasOwnProperty(request.titles[i])) {
+                request.titles[i] = translator[request.titles[i]];
+            }
+        } 
         // Retrieve the users credentials from chrome.local.storage
         getCredentials(sender.tab, function (credentials) {
             // Get user values from the api
@@ -238,8 +249,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                                 "password": credentials.password
                             },
                             "title": anime.jqXHR.responseText
-                        });
-
+                        }, sender.tab);
+                    }
+                    else if (anime.code === MALAnywhere.CODES.INVALID_CREDENTIALS) {
+                        malotgDeleteCredentials();
                     }
                 });
         });
