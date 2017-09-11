@@ -9,6 +9,7 @@ var translator = {
             "KONOSUBA -God's blessing on this wonderful world!": "Kono Subarashii Sekai ni Shukufuku wo!",
             "KONOSUBA -God's blessing on this wonderful world! 2": "Kono Subarashii Sekai ni Shukufuku wo! 2",
             "My Hero Academia Season 2": "Boku no Hero Academia 2nd Season"
+            
         }; 
 
 // Called when the user clicks on the browser action.
@@ -98,13 +99,11 @@ function malAdd(data, id, username, password, error, success) {
     var xml = objectToXML(data, "entry");
     var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
     $.ajax({
-        "url": " https://myanimelist.net/api/animelist/add/" + id + ".xml",
-        "type": "POST",
-        "data": {"data": xmlString},
+        "url": "https://6fqztrsrw3.execute-api.us-east-1.amazonaws.com/dev/malProxy",
+        "type": "GET",
+        "data": {"data": xmlString, "username": username, "password": password, "id": id },
         "success": success,
-        "error": error,
-        "username": username,
-        "password": password
+        "error": error
     });
 }
 // Updates the given users myanimelist with the given info ands calls the error or success depending on MyAnimeList's response
@@ -112,7 +111,7 @@ function malUpdate(data, id, username, password, error, success) {
     var xml = objectToXML(data, "entry");
     var xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + new XMLSerializer().serializeToString(xml);
     $.ajax({
-        "url": " https://myanimelist.net/api/animelist/update/" + id + ".xml",
+        "url": "https://myanimelist.net/api/animelist/update/" + id + ".xml",
         "type": "POST",
         "data": {"data": xmlString},
         "success": success,
@@ -125,7 +124,7 @@ function malUpdate(data, id, username, password, error, success) {
 // Deletes the given show from the given users MyAnimeList and calls success or error depending on the servers response
 function malDelete(id, username, password, error, success) {
     $.ajax({
-        "url": " https://myanimelist.net/api/animelist/delete/" + id + ".xml",
+        "url": "https://myanimelist.net/api/animelist/delete/" + id + ".xml",
         "type": "POST",
         "success": success,
         "error": error,
@@ -141,6 +140,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         // Verify the credentials before saving them
         MALAnywhere.verifyCredentials(request.username, request.password,
             function (jqXHR, textStatus, errorThrown) {
+                console.log(`jqXHR: ${jqXHR}`);
+                console.log(`textStatus: ${textStatus}`);
+                console.log(`errorThrown: ${errorThrown}`); 
                 // If there not send the message from the server to the front end
                 malotgSendInfo({
                     "message": "information update",
